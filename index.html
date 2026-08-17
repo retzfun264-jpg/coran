@@ -1,0 +1,958 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Quran</title>
+
+<style>
+:root{
+  --bg:#101513;
+  --bg2:#151d19;
+  --card:#18211d;
+  --card2:#1d2923;
+  --line:rgba(255,255,255,.08);
+
+  --text:#f3f5f2;
+  --muted:#89958e;
+
+  --green:#4ade80;
+  --green2:#16a34a;
+  --gold:#d6b56d;
+
+  --gradient:linear-gradient(135deg,#d6b56d,#4ade80);
+}
+
+*{
+  box-sizing:border-box;
+}
+
+html,body{
+  margin:0!important;
+  padding:0!important;
+  width:100%;
+  min-height:100%;
+  background:transparent!important;
+}
+
+body{
+  color:var(--text);
+  font-family:
+    -apple-system,
+    BlinkMacSystemFont,
+    "Segoe UI",
+    sans-serif;
+}
+
+button,select{
+  font:inherit;
+}
+
+button{
+  cursor:pointer;
+}
+
+.app{
+  width:100%;
+  max-width:620px;
+  margin:auto;
+  padding:12px;
+}
+
+/* HEADER */
+
+.header{
+  display:flex;
+  justify-content:space-between;
+  align-items:center;
+  gap:10px;
+  margin-bottom:10px;
+}
+
+.brand{
+  display:flex;
+  align-items:center;
+  gap:10px;
+}
+
+.logo{
+  width:36px;
+  height:36px;
+  display:grid;
+  place-items:center;
+
+  border:1px solid rgba(214,181,109,.25);
+  border-radius:11px;
+
+  background:
+    linear-gradient(
+      145deg,
+      rgba(214,181,109,.12),
+      rgba(74,222,128,.08)
+    );
+
+  color:var(--gold);
+  font-size:18px;
+}
+
+.title{
+  margin:0;
+  font-size:17px;
+  font-weight:800;
+  letter-spacing:-.4px;
+}
+
+.subtitle{
+  margin:2px 0 0;
+  color:var(--muted);
+  font-size:10px;
+}
+
+/* SELECT */
+
+select{
+  max-width:145px;
+
+  padding:7px 9px;
+
+  border:1px solid var(--line);
+  border-radius:8px;
+
+  outline:none;
+
+  background:var(--card2);
+  color:var(--text);
+
+  font-size:10px;
+}
+
+/* MAIN CARD */
+
+.quran-card{
+  border:1px solid var(--line);
+  border-radius:16px;
+
+  background:
+    linear-gradient(
+      145deg,
+      rgba(214,181,109,.035),
+      transparent 45%
+    ),
+    var(--card);
+
+  overflow:hidden;
+}
+
+/* SURAH */
+
+.surah{
+  padding:14px 16px 11px;
+
+  border-bottom:1px solid var(--line);
+
+  display:flex;
+  justify-content:space-between;
+  align-items:center;
+  gap:10px;
+}
+
+.surah-name{
+  margin:0;
+  font-size:15px;
+  font-weight:800;
+}
+
+.surah-info{
+  margin:2px 0 0;
+  color:var(--muted);
+  font-size:10px;
+}
+
+.ayah-number{
+  flex:none;
+
+  min-width:31px;
+  height:31px;
+
+  display:grid;
+  place-items:center;
+
+  border:1px solid rgba(214,181,109,.2);
+  border-radius:50%;
+
+  color:var(--gold);
+  font-size:10px;
+  font-weight:800;
+}
+
+/* VERSE */
+
+.ayah{
+  padding:20px 18px 15px;
+}
+
+.arabic{
+  direction:rtl;
+
+  margin:0;
+
+  color:#f4f0e7;
+
+  font-family:
+    "Amiri",
+    "Noto Naskh Arabic",
+    "Traditional Arabic",
+    serif;
+
+  font-size:28px;
+  line-height:1.9;
+
+  text-align:right;
+}
+
+.translation{
+  margin:16px 0 0;
+
+  color:#b5beb9;
+
+  font-size:12px;
+  line-height:1.65;
+}
+
+/* PROGRESS */
+
+.progress{
+  height:3px;
+  margin:0 16px;
+
+  overflow:hidden;
+
+  border-radius:99px;
+
+  background:rgba(255,255,255,.06);
+}
+
+.progress-fill{
+  height:100%;
+  width:0;
+
+  border-radius:inherit;
+
+  background:var(--gradient);
+
+  transition:.4s ease;
+}
+
+/* CONTROLS */
+
+.controls{
+  display:flex;
+  align-items:center;
+  justify-content:center;
+
+  gap:8px;
+
+  padding:13px 16px 15px;
+}
+
+.control{
+  width:36px;
+  height:36px;
+
+  display:grid;
+  place-items:center;
+
+  border:1px solid var(--line);
+  border-radius:9px;
+
+  background:var(--card2);
+  color:var(--text);
+
+  font-size:14px;
+
+  transition:.18s ease;
+}
+
+.control:hover{
+  border-color:rgba(74,222,128,.4);
+  transform:translateY(-1px);
+}
+
+.play{
+  width:42px;
+  height:42px;
+
+  border:0;
+  border-radius:12px;
+
+  background:var(--gradient);
+  color:#102017;
+
+  font-weight:900;
+}
+
+.position{
+  min-width:80px;
+
+  color:var(--muted);
+
+  font-size:10px;
+
+  text-align:center;
+}
+
+/* LOADING */
+
+.loading{
+  padding:45px 15px;
+
+  color:var(--muted);
+
+  text-align:center;
+  font-size:11px;
+}
+
+/* SETTINGS */
+
+.settings{
+  margin-top:9px;
+}
+
+.settings summary{
+  padding:9px 11px;
+
+  border:1px solid var(--line);
+  border-radius:9px;
+
+  background:rgba(255,255,255,.025);
+
+  color:var(--muted);
+
+  font-size:10px;
+
+  cursor:pointer;
+}
+
+.settings-content{
+  display:grid;
+  grid-template-columns:1fr 1fr;
+
+  gap:8px;
+
+  margin-top:8px;
+}
+
+.setting{
+  padding:10px;
+
+  border:1px solid var(--line);
+  border-radius:9px;
+
+  background:var(--card);
+}
+
+.setting label{
+  display:block;
+
+  margin-bottom:5px;
+
+  color:var(--muted);
+
+  font-size:9px;
+}
+
+.setting select{
+  width:100%;
+  max-width:none;
+}
+
+/* MOBILE */
+
+@media(max-width:480px){
+
+  .app{
+    padding:9px;
+  }
+
+  .arabic{
+    font-size:24px;
+  }
+
+  .settings-content{
+    grid-template-columns:1fr;
+  }
+
+  select{
+    max-width:120px;
+  }
+
+}
+</style>
+</head>
+
+<body>
+
+<div class="app">
+
+  <header class="header">
+
+    <div class="brand">
+
+      <div class="logo">☪</div>
+
+      <div>
+        <h1 class="title">Qur'an</h1>
+        <p class="subtitle">Read • Reflect • Remember</p>
+      </div>
+
+    </div>
+
+    <select id="surahSelect">
+      <option>Loading...</option>
+    </select>
+
+  </header>
+
+
+  <main class="quran-card">
+
+    <div id="content">
+
+      <div class="loading">
+        Loading Qur'an...
+      </div>
+
+    </div>
+
+  </main>
+
+
+  <details class="settings">
+
+    <summary>
+      ⚙ Settings
+    </summary>
+
+    <div class="settings-content">
+
+      <div class="setting">
+
+        <label>
+          Translation
+        </label>
+
+        <select id="translationSelect">
+
+          <option value="fr.hamidullah">
+            Français — Hamidullah
+          </option>
+
+        </select>
+
+      </div>
+
+
+      <div class="setting">
+
+        <label>
+          Reciter
+        </label>
+
+        <select id="reciterSelect">
+
+          <option value="ar.alafasy">
+            Mishary Alafasy
+          </option>
+
+        </select>
+
+      </div>
+
+    </div>
+
+  </details>
+
+</div>
+
+
+<script>
+
+const API =
+"https://api.alquran.cloud/v1";
+
+const STORAGE =
+"notion_quran_widget_v1";
+
+
+let state = {
+
+  surah: Number(
+    localStorage.getItem(
+      STORAGE+"_surah"
+    )
+  ) || 1,
+
+  ayah: Number(
+    localStorage.getItem(
+      STORAGE+"_ayah"
+    )
+  ) || 0,
+
+  translation:
+    localStorage.getItem(
+      STORAGE+"_translation"
+    ) || "fr.hamidullah",
+
+  reciter:
+    localStorage.getItem(
+      STORAGE+"_reciter"
+    ) || "ar.alafasy"
+
+};
+
+
+let surahs = [];
+let currentSurah = null;
+
+
+/* DOM */
+
+const $ = id =>
+  document.getElementById(id);
+
+
+/* SAVE */
+
+function save(){
+
+  localStorage.setItem(
+    STORAGE+"_surah",
+    state.surah
+  );
+
+  localStorage.setItem(
+    STORAGE+"_ayah",
+    state.ayah
+  );
+
+  localStorage.setItem(
+    STORAGE+"_translation",
+    state.translation
+  );
+
+  localStorage.setItem(
+    STORAGE+"_reciter",
+    state.reciter
+
+  );
+
+}
+
+
+/* LOAD SURAHS */
+
+async function loadSurahs(){
+
+  try{
+
+    const response =
+      await fetch(
+        `${API}/surah`
+      );
+
+    const json =
+      await response.json();
+
+    surahs =
+      json.data;
+
+    const select =
+      $("surahSelect");
+
+    select.innerHTML =
+      surahs.map(s => `
+
+        <option
+          value="${s.number}">
+          ${s.number}. ${s.englishName}
+        </option>
+
+      `).join("");
+
+    select.value =
+      state.surah;
+
+    await loadSurah();
+
+  }catch(error){
+
+    $("content").innerHTML = `
+
+      <div class="loading">
+        Impossible de charger le Qur'an.
+      </div>
+
+    `;
+
+  }
+
+}
+
+
+/* LOAD SURAH */
+
+async function loadSurah(){
+
+  $("content").innerHTML = `
+
+    <div class="loading">
+      Loading...
+    </div>
+
+  `;
+
+  try{
+
+    const response =
+      await fetch(
+
+        `${API}/surah/${state.surah}/editions/` +
+        `quran-uthmani,${state.translation}`
+
+      );
+
+    const json =
+      await response.json();
+
+    const arabic =
+      json.data[0];
+
+    const translation =
+      json.data[1];
+
+    currentSurah = {
+
+      arabic:
+        arabic.ayahs,
+
+      translation:
+        translation.ayahs,
+
+      name:
+        arabic.englishName,
+
+      arabicName:
+        arabic.name,
+
+      englishTranslation:
+        arabic.englishNameTranslation
+
+    };
+
+    if(
+      state.ayah >=
+      currentSurah.arabic.length
+    ){
+
+      state.ayah = 0;
+
+    }
+
+    save();
+
+    render();
+
+  }catch(error){
+
+    $("content").innerHTML = `
+
+      <div class="loading">
+        Erreur de chargement.
+      </div>
+
+    `;
+
+  }
+
+}
+
+
+/* RENDER */
+
+function render(){
+
+  if(!currentSurah)
+    return;
+
+
+  const ayah =
+    currentSurah.arabic[
+      state.ayah
+    ];
+
+  const translation =
+    currentSurah.translation[
+      state.ayah
+    ];
+
+
+  const total =
+    currentSurah.arabic.length;
+
+
+  const percent =
+    ((state.ayah+1)/total)*100;
+
+
+  $("content").innerHTML = `
+
+    <div class="surah">
+
+      <div>
+
+        <h2 class="surah-name">
+          ${currentSurah.name}
+        </h2>
+
+        <p class="surah-info">
+          ${currentSurah.arabicName}
+          · ${currentSurah.englishTranslation}
+        </p>
+
+      </div>
+
+      <div class="ayah-number">
+        ${state.ayah+1}
+      </div>
+
+    </div>
+
+
+    <div class="ayah">
+
+      <p class="arabic">
+        ${ayah.text}
+      </p>
+
+      <p class="translation">
+        ${translation.text}
+      </p>
+
+    </div>
+
+
+    <div class="progress">
+
+      <div
+        class="progress-fill"
+        style="width:${percent}%">
+      </div>
+
+    </div>
+
+
+    <div class="controls">
+
+      <button
+        class="control"
+        id="prevBtn"
+        title="Previous">
+        ‹
+      </button>
+
+
+      <button
+        class="control play"
+        id="playBtn"
+        title="Listen">
+        ▶
+      </button>
+
+
+      <div class="position">
+        ${state.ayah+1} / ${total}
+      </div>
+
+
+      <button
+        class="control"
+        id="nextBtn"
+        title="Next">
+        ›
+      </button>
+
+    </div>
+
+  `;
+
+
+  $("prevBtn").onclick =
+    previousAyah;
+
+  $("nextBtn").onclick =
+    nextAyah;
+
+  $("playBtn").onclick =
+    playAyah;
+
+}
+
+
+/* NAVIGATION */
+
+function nextAyah(){
+
+  if(
+    state.ayah <
+    currentSurah.arabic.length-1
+  ){
+
+    state.ayah++;
+
+  }else{
+
+    if(state.surah < 114){
+
+      state.surah++;
+
+      state.ayah = 0;
+
+      $("surahSelect").value =
+        state.surah;
+
+      loadSurah();
+
+      return;
+
+    }
+
+  }
+
+  save();
+
+  render();
+
+}
+
+
+function previousAyah(){
+
+  if(state.ayah > 0){
+
+    state.ayah--;
+
+  }else{
+
+    if(state.surah > 1){
+
+      state.surah--;
+
+      $("surahSelect").value =
+        state.surah;
+
+      loadSurah();
+
+      return;
+
+    }
+
+  }
+
+  save();
+
+  render();
+
+}
+
+
+/* AUDIO */
+
+function playAyah(){
+
+  const ayah =
+    currentSurah.arabic[
+      state.ayah
+    ];
+
+
+  const audio =
+    new Audio(
+      `https://cdn.islamic.network/quran/audio/128/` +
+      `${state.reciter}/${ayah.number}.mp3`
+    );
+
+
+  audio.play().catch(() => {
+
+    alert(
+      "Impossible de lancer l'audio."
+    );
+
+  });
+
+}
+
+
+/* SURAH SELECT */
+
+$("surahSelect").onchange =
+async function(){
+
+  state.surah =
+    Number(this.value);
+
+  state.ayah = 0;
+
+  save();
+
+  await loadSurah();
+
+};
+
+
+/* TRANSLATION */
+
+$("translationSelect").value =
+  state.translation;
+
+
+$("translationSelect").onchange =
+async function(){
+
+  state.translation =
+    this.value;
+
+  state.ayah = 0;
+
+  save();
+
+  await loadSurah();
+
+};
+
+
+/* RECITER */
+
+$("reciterSelect").value =
+  state.reciter;
+
+
+$("reciterSelect").onchange =
+function(){
+
+  state.reciter =
+    this.value;
+
+  save();
+
+};
+
+
+/* START */
+
+loadSurahs();
+
+</script>
+
+</body>
+</html>

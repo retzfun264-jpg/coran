@@ -8,11 +8,11 @@
 <style>
 :root{
   --bg:#191919;
-  --card:#222222;
+  --card:#202020;
   --card2:#292929;
   --border:rgba(255,255,255,.09);
   --text:#f2f2f2;
-  --muted:#999;
+  --muted:#9b9b9b;
   --gold:#d8ad5b;
   --gold2:#b98735;
 }
@@ -24,7 +24,7 @@ html,body{
   padding:0;
   width:100%;
   min-height:100%;
-  background:transparent!important;
+  background:var(--bg)!important;
 }
 
 body{
@@ -145,14 +145,20 @@ button{
 }
 
 .play{
-  width:31px;
-  height:31px;
+  width:32px;
+  height:32px;
   display:grid;
   place-items:center;
   border-radius:50%;
   background:rgba(216,173,91,.12);
   color:var(--gold);
   font-size:13px;
+  transition:.2s;
+}
+
+.play:hover{
+  background:rgba(216,173,91,.2);
+  transform:scale(1.05);
 }
 
 .arabic{
@@ -188,17 +194,6 @@ button{
   font-weight:800;
   letter-spacing:.08em;
   text-transform:uppercase;
-}
-
-.audio{
-  display:none;
-  width:100%;
-  height:34px;
-  margin-top:13px;
-}
-
-.audio.show{
-  display:block;
 }
 
 .message{
@@ -242,7 +237,10 @@ button{
     <div class="title-icon">☪</div>
     <h1>Quran</h1>
   </div>
-  <p class="subtitle">Search a surah and verse</p>
+
+  <p class="subtitle">
+    Search a surah and verse
+  </p>
 </header>
 
 <section class="search-card">
@@ -252,7 +250,7 @@ button{
     <input
       id="searchInput"
       type="text"
-      placeholder="Ex : Al Baqara 255"
+      placeholder="Ex : Baqara 255, 2:255..."
       autocomplete="off"
     >
 
@@ -279,261 +277,317 @@ button{
 
 <script>
 
-/* ================================
-   API
-================================ */
+const API="https://api.alquran.cloud/v1";
 
-const API =
-"https://api.alquran.cloud/v1";
-
-/*
-  API utilisée :
-  AlQuran Cloud
-*/
+const searchInput=document.getElementById("searchInput");
+const searchBtn=document.getElementById("searchBtn");
+const result=document.getElementById("result");
 
 
 /* ================================
-   ELEMENTS
+   SURAH DATABASE
 ================================ */
 
-const searchInput =
-document.getElementById("searchInput");
+const surahs = [
 
-const searchBtn =
-document.getElementById("searchBtn");
+["fatiha",1,"Al-Fatiha"],
+["baqara",2,"Al-Baqarah"],
+["baqarah",2,"Al-Baqarah"],
+["imran",3,"Aal-E-Imran"],
+["nisa",4,"An-Nisa"],
+["maidah",5,"Al-Ma'idah"],
+["anam",6,"Al-An'am"],
+["araf",7,"Al-A'raf"],
+["anfal",8,"Al-Anfal"],
+["tawba",9,"At-Tawbah"],
+["taubah",9,"At-Tawbah"],
+["yunus",10,"Yunus"],
+["hud",11,"Hud"],
+["yusuf",12,"Yusuf"],
+["rad",13,"Ar-Ra'd"],
+["ibrahim",14,"Ibrahim"],
+["hijr",15,"Al-Hijr"],
+["nahl",16,"An-Nahl"],
+["isra",17,"Al-Isra"],
+["kahf",18,"Al-Kahf"],
+["maryam",19,"Maryam"],
+["taha",20,"Ta-Ha"],
+["ta ha",20,"Ta-Ha"],
+["anbiya",21,"Al-Anbiya"],
+["hajj",22,"Al-Hajj"],
+["muminun",23,"Al-Mu'minun"],
+["nur",24,"An-Nur"],
+["furqan",25,"Al-Furqan"],
+["shuara",26,"Ash-Shu'ara"],
+["naml",27,"An-Naml"],
+["qasas",28,"Al-Qasas"],
+["ankabut",29,"Al-Ankabut"],
+["rum",30,"Ar-Rum"],
+["luqman",31,"Luqman"],
+["sajda",32,"As-Sajdah"],
+["ahzab",33,"Al-Ahzab"],
+["saba",34,"Saba"],
+["fatir",35,"Fatir"],
+["yasin",36,"Ya-Sin"],
+["ya sin",36,"Ya-Sin"],
+["saffat",37,"As-Saffat"],
+["sad",38,"Sad"],
+["zumar",39,"Az-Zumar"],
+["ghafir",40,"Ghafir"],
+["fussilat",41,"Fussilat"],
+["shura",42,"Ash-Shura"],
+["zukhruf",43,"Az-Zukhruf"],
+["dukhan",44,"Ad-Dukhan"],
+["jathiya",45,"Al-Jathiyah"],
+["ahqaf",46,"Al-Ahqaf"],
+["muhammad",47,"Muhammad"],
+["fath",48,"Al-Fath"],
+["hujurat",49,"Al-Hujurat"],
+["qaf",50,"Qaf"],
+["dhariyat",51,"Adh-Dhariyat"],
+["tur",52,"At-Tur"],
+["najm",53,"An-Najm"],
+["qamar",54,"Al-Qamar"],
+["rahman",55,"Ar-Rahman"],
+["waqia",56,"Al-Waqi'ah"],
+["hadid",57,"Al-Hadid"],
+["mujadila",58,"Al-Mujadilah"],
+["hashr",59,"Al-Hashr"],
+["mumtahanah",60,"Al-Mumtahanah"],
+["saff",61,"As-Saff"],
+["jumuah",62,"Al-Jumu'ah"],
+["munafiqun",63,"Al-Munafiqun"],
+["taghabun",64,"At-Taghabun"],
+["talaq",65,"At-Talaq"],
+["tahrim",66,"At-Tahrim"],
+["mulk",67,"Al-Mulk"],
+["qalam",68,"Al-Qalam"],
+["haqqah",69,"Al-Haqqah"],
+["maarij",70,"Al-Ma'arij"],
+["nuh",71,"Nuh"],
+["jinn",72,"Al-Jinn"],
+["muzzammil",73,"Al-Muzzammil"],
+["muddaththir",74,"Al-Muddaththir"],
+["qiyamah",75,"Al-Qiyamah"],
+["insan",76,"Al-Insan"],
+["mursalat",77,"Al-Mursalat"],
+["naba",78,"An-Naba"],
+["naziat",79,"An-Nazi'at"],
+["abasa",80,"Abasa"],
+["takwir",81,"At-Takwir"],
+["infitar",82,"Al-Infitar"],
+["mutaffifin",83,"Al-Mutaffifin"],
+["inshiqaq",84,"Al-Inshiqaq"],
+["buruj",85,"Al-Buruj"],
+["tariq",86,"At-Tariq"],
+["ala",87,"Al-A'la"],
+["ghashiyah",88,"Al-Ghashiyah"],
+["fajr",89,"Al-Fajr"],
+["balad",90,"Al-Balad"],
+["shams",91,"Ash-Shams"],
+["layl",92,"Al-Layl"],
+["duha",93,"Ad-Duha"],
+["sharh",94,"Ash-Sharh"],
+["inshirah",94,"Ash-Sharh"],
+["tin",95,"At-Tin"],
+["alaq",96,"Al-Alaq"],
+["qadr",97,"Al-Qadr"],
+["bayyinah",98,"Al-Bayyinah"],
+["zalzalah",99,"Az-Zalzalah"],
+["adiyat",100,"Al-Adiyat"],
+["qariah",101,"Al-Qari'ah"],
+["takathur",102,"At-Takathur"],
+["asr",103,"Al-Asr"],
+["humazah",104,"Al-Humazah"],
+["fil",105,"Al-Fil"],
+["quraysh",106,"Quraysh"],
+["maun",107,"Al-Ma'un"],
+["kawthar",108,"Al-Kawthar"],
+["kauthar",108,"Al-Kawthar"],
+["kafirun",109,"Al-Kafirun"],
+["nasr",110,"An-Nasr"],
+["masad",111,"Al-Masad"],
+["lahab",111,"Al-Masad"],
+["ikhlas",112,"Al-Ikhlas"],
+["falaq",113,"Al-Falaq"],
+["nas",114,"An-Nas"]
 
-const result =
-document.getElementById("result");
+];
 
 
 /* ================================
-   SURAH NAMES
+   NORMALIZE SEARCH
 ================================ */
 
-const surahs = {
+function normalize(text){
 
-"fatiha":1,
-"al fatiha":1,
-"fatihah":1,
+  return text
+    .toLowerCase()
+    .normalize("NFD")
+    .replace(/[\u0300-\u036f]/g,"")
+    .replace(/[']/g,"")
+    .replace(/[-]/g," ")
+    .replace(/\bsurah\b/g,"")
+    .replace(/\bsourate\b/g,"")
+    .replace(/\bverset\b/g,"")
+    .replace(/\bayah\b/g,"")
+    .replace(/\s+/g," ")
+    .trim();
 
-"baqara":2,
-"al baqara":2,
-"baqarah":2,
+}
 
-"imran":3,
-"al imran":3,
 
-"nisa":4,
-"an nisa":4,
+/* ================================
+   FIND SURAH
+================================ */
 
-"maidah":5,
-"al maidah":5,
+function findSurah(name){
 
-"anam":6,
-"al anam":6,
+  const clean=normalize(name);
 
-"araf":7,
-"al araf":7,
+  /* Exact match */
 
-"anfal":8,
-"al anfal":8,
+  let exact=surahs.find(
+    s=>normalize(s[0])===clean
+  );
 
-"tawba":9,
-"at tawba":9,
+  if(exact) return exact;
 
-"yunus":10,
-"yusuf":12,
 
-"kahf":18,
-"al kahf":18,
+  /* Name contains search */
 
-"maryam":19,
+  let contains=surahs.find(
+    s=>normalize(s[0]).includes(clean)
+  );
 
-"ta ha":20,
-"taha":20,
+  if(contains) return contains;
 
-"anbiya":21,
 
-"hajj":22,
+  /* Search contains name */
 
-"muminun":23,
+  contains=surahs.find(
+    s=>clean.includes(normalize(s[0]))
+  );
 
-"furqan":25,
+  if(contains) return contains;
 
-"shuara":26,
 
-"naml":27,
+  /* Fuzzy search */
 
-"qasas":28,
+  let best=null;
+  let bestScore=0;
 
-"ankabut":29,
+  for(const s of surahs){
 
-"rum":30,
+    const target=normalize(s[0]);
 
-"luqman":31,
+    let score=0;
 
-"ahzab":33,
+    for(let i=0;i<clean.length;i++){
 
-"yasin":36,
-"ya sin":36,
+      if(target[i]===clean[i]){
+        score++;
+      }
 
-"saffat":37,
+    }
 
-"zumar":39,
+    const ratio=score/
+      Math.max(target.length,clean.length);
 
-"ghafir":40,
+    if(ratio>bestScore){
 
-"fussilat":41,
+      bestScore=ratio;
+      best=s;
 
-"shura":42,
+    }
 
-"zukhruf":43,
+  }
 
-"dukhan":44,
+  if(bestScore>=0.45){
+    return best;
+  }
 
-"jathiya":45,
+  return null;
 
-"ahqaf":46,
+}
 
-"muhammad":47,
 
-"fath":48,
+/* ================================
+   PARSE SEARCH
+================================ */
 
-"hujurat":49,
+function parseSearch(query){
 
-"qaf":50,
+  let clean=normalize(query);
 
-"dhariyat":51,
+  /*
+    Formats:
 
-"tur":52,
+    Baqara 255
+    Baq 255
+    Al Baqara verset 255
+    2:255
+    2 255
+  */
 
-"najm":53,
+  let match=clean.match(
+    /^(\d{1,3})\s*[:]\s*(\d{1,3})$/
+  );
 
-"qamar":54,
+  if(match){
 
-"rahman":55,
-"ar rahman":55,
+    return {
+      surah:Number(match[1]),
+      verse:Number(match[2])
+    };
 
-"waqia":56,
+  }
 
-"hadid":57,
 
-"mujadila":58,
+  match=clean.match(
+    /^(\d{1,3})\s+(\d{1,3})$/
+  );
 
-"hashr":59,
+  if(match){
 
-"mumtahanah":60,
+    const first=Number(match[1]);
+    const second=Number(match[2]);
 
-"saff":61,
+    if(first<=114){
 
-"jumuah":62,
+      return {
+        surah:first,
+        verse:second
+      };
 
-"munafiqun":63,
+    }
 
-"taghabun":64,
+  }
 
-"talaq":65,
 
-"tahrim":66,
+  match=clean.match(
+    /^(.+?)\s+(\d{1,3})$/
+  );
 
-"mulk":67,
-"al mulk":67,
+  if(!match){
+    return null;
+  }
 
-"qalam":68,
+  const name=match[1];
+  const verse=Number(match[2]);
 
-"haqqah":69,
+  const found=findSurah(name);
 
-"maarij":70,
+  if(!found){
+    return null;
+  }
 
-"nuh":71,
+  return {
+    surah:found[1],
+    verse:verse
+  };
 
-"jinn":72,
-
-"muzzammil":73,
-
-"muddaththir":74,
-
-"qiyamah":75,
-
-"insan":76,
-
-"mursalat":77,
-
-"naba":78,
-
-"naziat":79,
-
-"abasa":80,
-
-"takwir":81,
-
-"infitar":82,
-
-"mutaffifin":83,
-
-"inshiqaq":84,
-
-"buruj":85,
-
-"tariq":86,
-
-"ala":87,
-
-"ghashiyah":88,
-
-"fajr":89,
-
-"balad":90,
-
-"shams":91,
-
-"layl":92,
-
-"duha":93,
-
-"sharh":94,
-
-"tin":95,
-
-"alaq":96,
-
-"qadr":97,
-
-"bayyinah":98,
-
-"zalzalah":99,
-
-"adiyat":100,
-
-"qariah":101,
-
-"takathur":102,
-
-"asr":103,
-
-"humazah":104,
-
-"fil":105,
-
-"quraysh":106,
-
-"maun":107,
-
-"kawthar":108,
-
-"kafirun":109,
-
-"nasr":110,
-
-"masad":111,
-
-"ikhlas":112,
-
-"falaq":113,
-
-"nas":114
-
-};
+}
 
 
 /* ================================
@@ -542,67 +596,47 @@ const surahs = {
 
 async function searchVerse(){
 
-  const query =
-    searchInput.value
-      .trim()
-      .toLowerCase();
+  const query=searchInput.value.trim();
 
   if(!query){
     return;
   }
 
-  result.innerHTML =
-    `<div class="message">
-      Loading...
-    </div>`;
+  result.innerHTML=
+  `<div class="message">Loading...</div>`;
 
   try{
 
-    const match =
-      query.match(/(.+?)\s+(\d+)$/);
+    const parsed=parseSearch(query);
 
-    if(!match){
-
-      throw new Error(
-        "Format : Al Baqara 255"
-      );
-
+    if(!parsed){
+      throw new Error();
     }
 
-    let name =
-      match[1]
-        .replace(/^surah\s+/,"")
-        .replace(/^sourate\s+/,"")
-        .trim();
-
-    const verse =
-      Number(match[2]);
-
-    const surah =
-      surahs[name];
-
-    if(!surah){
-
-      throw new Error(
-        "Surah not found"
-      );
-
+    if(
+      parsed.surah<1 ||
+      parsed.surah>114 ||
+      parsed.verse<1
+    ){
+      throw new Error();
     }
 
     await loadVerse(
-      surah,
-      verse
+      parsed.surah,
+      parsed.verse
     );
 
   }catch(error){
 
-    result.innerHTML =
-      `<div class="message">
-        Impossible de trouver ce verset.<br>
-        <small>
-        Exemple : Al Baqara 255
-        </small>
-      </div>`;
+    result.innerHTML=
+    `<div class="message">
+      Verset introuvable.<br><br>
+      <small>
+        Essaie par exemple :<br>
+        <b>Baq 255</b> · <b>Baqara 255</b> ·
+        <b>2:255</b> · <b>2 255</b>
+      </small>
+    </div>`;
 
   }
 
@@ -613,87 +647,61 @@ async function searchVerse(){
    LOAD VERSE
 ================================ */
 
-async function loadVerse(
-  surah,
-  verse
-){
+async function loadVerse(surah,verse){
 
-  /*
-    Arabic
-  */
+  const requests=await Promise.all([
 
-  const arabicResponse =
-    await fetch(
+    fetch(
       `${API}/ayah/${surah}:${verse}/quran-uthmani`
-    );
+    ),
 
-  const arabicData =
-    await arabicResponse.json();
-
-
-  /*
-    French translation
-  */
-
-  const frenchResponse =
-    await fetch(
+    fetch(
       `${API}/ayah/${surah}:${verse}/fr.hamidullah`
-    );
+    ),
 
-  const frenchData =
-    await frenchResponse.json();
-
-
-  /*
-    Transliteration
-    Uses English transliteration
-    and displays it separately.
-  */
-
-  const translitResponse =
-    await fetch(
+    fetch(
       `${API}/ayah/${surah}:${verse}/en.transliteration`
-    );
+    ),
 
-  const translitData =
-    await translitResponse.json();
-
-
-  /*
-    Audio
-  */
-
-  const audioResponse =
-    await fetch(
+    fetch(
       `${API}/ayah/${surah}:${verse}/ar.alafasy`
-    );
+    )
 
-  const audioData =
-    await audioResponse.json();
+  ]);
 
-
-  const arabic =
-    arabicData.data.text;
-
-  const french =
-    frenchData.data.text;
-
-  const translit =
-    translitData.data.text;
-
-  const audio =
-    audioData.data.audio;
+  const [
+    arabicResponse,
+    frenchResponse,
+    translitResponse,
+    audioResponse
+  ]=requests;
 
 
-  const surahName =
-    arabicData.data.surah.name;
+  const [
+    arabicData,
+    frenchData,
+    translitData,
+    audioData
+  ]=await Promise.all([
+
+    arabicResponse.json(),
+    frenchResponse.json(),
+    translitResponse.json(),
+    audioResponse.json()
+
+  ]);
 
 
-  /*
-    DISPLAY
-  */
+  const arabic=arabicData.data.text;
+  const french=frenchData.data.text;
+  const translit=translitData.data.text;
+  const audio=audioData.data.audio;
 
-  result.innerHTML = `
+  const surahName=
+    arabicData.data.surah.englishName;
+
+
+  result.innerHTML=`
 
     <article class="verse-card">
 
@@ -713,14 +721,10 @@ async function loadVerse(
       </div>
 
 
-      <!-- ARABIC -->
-
       <div class="arabic">
         ${arabic}
       </div>
 
-
-      <!-- TRANSLITERATION -->
 
       <div class="translit">
 
@@ -733,8 +737,6 @@ async function loadVerse(
       </div>
 
 
-      <!-- FRENCH -->
-
       <div class="translation">
 
         <span class="label">
@@ -746,12 +748,9 @@ async function loadVerse(
       </div>
 
 
-      <!-- AUDIO -->
-
       <audio
         id="audio"
-        class="audio"
-        controls
+        preload="none"
         src="${audio}">
       </audio>
 
@@ -760,26 +759,32 @@ async function loadVerse(
   `;
 
 
-  const playBtn =
+  const playBtn=
     document.getElementById("playBtn");
 
-  const audioElement =
+  const audioElement=
     document.getElementById("audio");
 
 
-  playBtn.onclick = ()=>{
+  playBtn.onclick=async()=>{
 
-    if(audioElement.paused){
+    try{
 
-      audioElement.play();
+      if(audioElement.paused){
 
-      playBtn.textContent="❚❚";
+        await audioElement.play();
 
-      audioElement.classList.add("show");
+        playBtn.textContent="❚❚";
 
-    }else{
+      }else{
 
-      audioElement.pause();
+        audioElement.pause();
+
+        playBtn.textContent="▶";
+
+      }
+
+    }catch(error){
 
       playBtn.textContent="▶";
 
@@ -788,7 +793,7 @@ async function loadVerse(
   };
 
 
-  audioElement.onended = ()=>{
+  audioElement.onended=()=>{
 
     playBtn.textContent="▶";
 
@@ -801,9 +806,10 @@ async function loadVerse(
    EVENTS
 ================================ */
 
-searchBtn.onclick =
-searchVerse;
-
+searchBtn.addEventListener(
+  "click",
+  searchVerse
+);
 
 searchInput.addEventListener(
   "keydown",

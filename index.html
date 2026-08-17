@@ -13,7 +13,6 @@
   --text:#f2f2f2;
   --muted:#9b9b9b;
   --gold:#d8ad5b;
-  --gold2:#b98735;
 }
 
 *{box-sizing:border-box}
@@ -23,7 +22,7 @@ html,body{
   padding:0;
   width:100%;
   min-height:100%;
-  background:var(--bg)!important;
+  background:#191919!important;
 }
 
 body{
@@ -38,13 +37,16 @@ body{
   padding:12px;
 }
 
-.header{margin-bottom:12px}
+/* HEADER */
+
+.header{
+  margin-bottom:12px;
+}
 
 .title{
   display:flex;
   align-items:center;
   gap:9px;
-  margin-bottom:3px;
 }
 
 .title-icon{
@@ -55,17 +57,15 @@ body{
   border-radius:9px;
   background:rgba(216,173,91,.12);
   color:var(--gold);
-  font-size:17px;
 }
 
 h1{
   margin:0;
   font-size:21px;
-  letter-spacing:-.7px;
 }
 
 .subtitle{
-  margin:0;
+  margin:3px 0 0;
   color:var(--muted);
   font-size:11px;
 }
@@ -101,19 +101,15 @@ input:focus{
   border-color:rgba(216,173,91,.55);
 }
 
-button{
-  border:0;
-  cursor:pointer;
-  font:inherit;
-}
-
 .search-btn{
+  border:0;
   padding:0 15px;
   border-radius:9px;
   background:linear-gradient(135deg,#e1bb70,#b98735);
   color:#18120a;
   font-size:12px;
   font-weight:800;
+  cursor:pointer;
 }
 
 /* VERSE */
@@ -131,7 +127,6 @@ button{
   display:flex;
   justify-content:space-between;
   align-items:center;
-  gap:10px;
   margin-bottom:14px;
 }
 
@@ -144,18 +139,11 @@ button{
 .play{
   width:32px;
   height:32px;
-  display:grid;
-  place-items:center;
+  border:0;
   border-radius:50%;
   background:rgba(216,173,91,.12);
   color:var(--gold);
-  font-size:13px;
-  transition:.2s;
-}
-
-.play:hover{
-  background:rgba(216,173,91,.2);
-  transform:scale(1.05);
+  cursor:pointer;
 }
 
 .arabic{
@@ -193,43 +181,44 @@ button{
   text-transform:uppercase;
 }
 
-/* NAVIGATION */
+/* FLECHES */
 
 .navigation{
-  display:grid;
-  grid-template-columns:1fr auto 1fr;
+  display:flex;
+  justify-content:space-between;
   align-items:center;
-  gap:8px;
-  margin-top:14px;
+  margin-top:16px;
+  padding-top:12px;
+  border-top:1px solid var(--border);
 }
 
-.nav-btn{
+.arrow{
+  width:42px;
   height:36px;
-  padding:0 12px;
   border:1px solid var(--border);
-  border-radius:9px;
-  background:var(--card);
-  color:#d7d7d7;
-  font-size:11px;
+  border-radius:10px;
+  background:#292929;
+  color:var(--text);
+  font-size:20px;
+  cursor:pointer;
   transition:.2s;
 }
 
-.nav-btn:hover{
-  background:#292929;
-  border-color:rgba(216,173,91,.3);
+.arrow:hover{
+  background:rgba(216,173,91,.15);
+  border-color:rgba(216,173,91,.4);
   color:var(--gold);
 }
 
-.nav-btn:disabled{
-  opacity:.35;
+.arrow:disabled{
+  opacity:.3;
   cursor:not-allowed;
 }
 
-.page{
+.verse-number{
   color:var(--muted);
   font-size:10px;
   text-align:center;
-  white-space:nowrap;
 }
 
 .message{
@@ -241,33 +230,26 @@ button{
   font-size:11px;
 }
 
-.suggestions{
-  margin-top:8px;
-  color:var(--muted);
-  font-size:10px;
-  text-align:center;
-}
+/* MOBILE */
 
 @media(max-width:480px){
 
-  .app{padding:9px}
+  .app{
+    padding:9px;
+  }
 
   .search{
     grid-template-columns:1fr;
   }
 
-  .search-btn{height:37px}
-
-  .arabic{font-size:25px}
-
-  .navigation{
-    grid-template-columns:1fr 60px 1fr;
+  .search-btn{
+    height:37px;
   }
 
-  .nav-btn{
-    padding:0 6px;
-    font-size:10px;
+  .arabic{
+    font-size:25px;
   }
+
 }
 </style>
 </head>
@@ -277,6 +259,7 @@ button{
 <main class="app">
 
 <header class="header">
+
   <div class="title">
     <div class="title-icon">☪</div>
     <h1>Quran</h1>
@@ -285,7 +268,9 @@ button{
   <p class="subtitle">
     Search a surah and verse
   </p>
+
 </header>
+
 
 <section class="search-card">
 
@@ -309,23 +294,31 @@ button{
 
 </section>
 
+
 <section id="result">
 
   <div class="message">
-    Search for a verse to begin.
+    Recherche un verset pour commencer.
   </div>
 
 </section>
 
 </main>
 
+
 <script>
 
 const API="https://api.alquran.cloud/v1";
 
-const searchInput=document.getElementById("searchInput");
-const searchBtn=document.getElementById("searchBtn");
-const result=document.getElementById("result");
+const searchInput=
+document.getElementById("searchInput");
+
+const searchBtn=
+document.getElementById("searchBtn");
+
+const result=
+document.getElementById("result");
+
 
 let currentSurah=null;
 let currentVerse=null;
@@ -333,129 +326,136 @@ let currentAudio=null;
 
 
 /* =================================
-   SURAH DATABASE
+   NOMS DES SOURATES
 ================================= */
 
 const surahs=[
-["fatiha",1,"Al-Fatiha","the opening"],
-["baqara",2,"Al-Baqarah","the cow"],
-["imran",3,"Aal-E-Imran","family of imran"],
-["nisa",4,"An-Nisa","the women"],
-["maidah",5,"Al-Ma'idah","the table"],
-["anam",6,"Al-An'am","the cattle"],
-["araf",7,"Al-A'raf","the heights"],
-["anfal",8,"Al-Anfal","the spoils"],
-["tawba",9,"At-Tawbah","repentance"],
-["yunus",10,"Yunus","jonah"],
-["hud",11,"Hud","hud"],
-["yusuf",12,"Yusuf","joseph"],
-["rad",13,"Ar-Ra'd","the thunder"],
-["ibrahim",14,"Ibrahim","abraham"],
-["hijr",15,"Al-Hijr","the rocky tract"],
-["nahl",16,"An-Nahl","the bee"],
-["isra",17,"Al-Isra","the night journey"],
-["kahf",18,"Al-Kahf","the cave"],
-["maryam",19,"Maryam","mary"],
-["taha",20,"Ta-Ha","ta ha"],
-["anbiya",21,"Al-Anbiya","the prophets"],
-["hajj",22,"Al-Hajj","the pilgrimage"],
-["muminun",23,"Al-Mu'minun","the believers"],
-["nur",24,"An-Nur","the light"],
-["furqan",25,"Al-Furqan","the criterion"],
-["shuara",26,"Ash-Shu'ara","the poets"],
-["naml",27,"An-Naml","the ants"],
-["qasas",28,"Al-Qasas","the stories"],
-["ankabut",29,"Al-Ankabut","the spider"],
-["rum",30,"Ar-Rum","the romans"],
-["luqman",31,"Luqman","luqman"],
-["sajda",32,"As-Sajdah","prostration"],
-["ahzab",33,"Al-Ahzab","the confederates"],
-["saba",34,"Saba","sheba"],
-["fatir",35,"Fatir","originator"],
-["yasin",36,"Ya-Sin","ya sin"],
-["saffat",37,"As-Saffat","those who set the ranks"],
-["sad",38,"Sad","sad"],
-["zumar",39,"Az-Zumar","the groups"],
-["ghafir",40,"Ghafir","the forgiver"],
-["fussilat",41,"Fussilat","explained in detail"],
-["shura",42,"Ash-Shura","consultation"],
-["zukhruf",43,"Az-Zukhruf","the gold adornments"],
-["dukhan",44,"Ad-Dukhan","the smoke"],
-["jathiya",45,"Al-Jathiyah","the crouching"],
-["ahqaf",46,"Al-Ahqaf","the winding sand tracts"],
-["muhammad",47,"Muhammad","muhammad"],
-["fath",48,"Al-Fath","the victory"],
-["hujurat",49,"Al-Hujurat","the rooms"],
-["qaf",50,"Qaf","qaf"],
-["dhariyat",51,"Adh-Dhariyat","the winds"],
-["tur",52,"At-Tur","the mount"],
-["najm",53,"An-Najm","the star"],
-["qamar",54,"Al-Qamar","the moon"],
-["rahman",55,"Ar-Rahman","the most merciful"],
-["waqia",56,"Al-Waqi'ah","the inevitable"],
-["hadid",57,"Al-Hadid","iron"],
-["mujadila",58,"Al-Mujadilah","the pleading woman"],
-["hashr",59,"Al-Hashr","the gathering"],
-["mumtahanah",60,"Al-Mumtahanah","the tested woman"],
-["saff",61,"As-Saff","the ranks"],
-["jumuah",62,"Al-Jumu'ah","friday"],
-["munafiqun",63,"Al-Munafiqun","the hypocrites"],
-["taghabun",64,"At-Taghabun","mutual loss and gain"],
-["talaq",65,"At-Talaq","divorce"],
-["tahrim",66,"At-Tahrim","prohibition"],
-["mulk",67,"Al-Mulk","the sovereignty"],
-["qalam",68,"Al-Qalam","the pen"],
-["haqqah",69,"Al-Haqqah","the reality"],
-["maarij",70,"Al-Ma'arij","the ascending stairways"],
-["nuh",71,"Nuh","noah"],
-["jinn",72,"Al-Jinn","the jinn"],
-["muzzammil",73,"Al-Muzzammil","the enshrouded one"],
-["muddaththir",74,"Al-Muddaththir","the cloaked one"],
-["qiyamah",75,"Al-Qiyamah","the resurrection"],
-["insan",76,"Al-Insan","man"],
-["mursalat",77,"Al-Mursalat","those sent forth"],
-["naba",78,"An-Naba","the tidings"],
-["naziat",79,"An-Nazi'at","those who drag forth"],
-["abasa",80,"Abasa","he frowned"],
-["takwir",81,"At-Takwir","the folding up"],
-["infitar",82,"Al-Infitar","the cleaving"],
-["mutaffifin",83,"Al-Mutaffifin","the defrauders"],
-["inshiqaq",84,"Al-Inshiqaq","the splitting"],
-["buruj",85,"Al-Buruj","the constellations"],
-["tariq",86,"At-Tariq","the night visitor"],
-["ala",87,"Al-A'la","the most high"],
-["ghashiyah",88,"Al-Ghashiyah","the overwhelming"],
-["fajr",89,"Al-Fajr","the dawn"],
-["balad",90,"Al-Balad","the city"],
-["shams",91,"Ash-Shams","the sun"],
-["layl",92,"Al-Layl","the night"],
-["duha",93,"Ad-Duha","the morning brightness"],
-["sharh",94,"Ash-Sharh","the relief"],
-["tin",95,"At-Tin","the fig"],
-["alaq",96,"Al-Alaq","the clot"],
-["qadr",97,"Al-Qadr","the power"],
-["bayyinah",98,"Al-Bayyinah","the clear proof"],
-["zalzalah",99,"Az-Zalzalah","the earthquake"],
-["adiyat",100,"Al-Adiyat","the chargers"],
-["qariah",101,"Al-Qari'ah","the striking calamity"],
-["takathur",102,"At-Takathur","competition"],
-["asr",103,"Al-Asr","time"],
-["humazah",104,"Al-Humazah","the slanderer"],
-["fil",105,"Al-Fil","the elephant"],
-["quraysh",106,"Quraysh","quraysh"],
-["maun",107,"Al-Ma'un","small kindnesses"],
-["kawthar",108,"Al-Kawthar","abundance"],
-["kafirun",109,"Al-Kafirun","the disbelievers"],
-["nasr",110,"An-Nasr","the help"],
-["masad",111,"Al-Masad","palm fiber"],
-["ikhlas",112,"Al-Ikhlas","sincerity"],
-["falaq",113,"Al-Falaq","the daybreak"],
-["nas",114,"An-Nas","mankind"]
+
+["fatiha",1,"Al-Fatiha"],
+["baqara",2,"Al-Baqarah"],
+["baqarah",2,"Al-Baqarah"],
+["baq",2,"Al-Baqarah"],
+["bq",2,"Al-Baqarah"],
+
+["imran",3,"Aal-E-Imran"],
+["nisa",4,"An-Nisa"],
+["maidah",5,"Al-Ma'idah"],
+["anam",6,"Al-An'am"],
+["araf",7,"Al-A'raf"],
+["anfal",8,"Al-Anfal"],
+["tawba",9,"At-Tawbah"],
+["yunus",10,"Yunus"],
+["hud",11,"Hud"],
+["yusuf",12,"Yusuf"],
+["rad",13,"Ar-Ra'd"],
+["ibrahim",14,"Ibrahim"],
+["hijr",15,"Al-Hijr"],
+["nahl",16,"An-Nahl"],
+["isra",17,"Al-Isra"],
+["kahf",18,"Al-Kahf"],
+["maryam",19,"Maryam"],
+["taha",20,"Ta-Ha"],
+["anbiya",21,"Al-Anbiya"],
+["hajj",22,"Al-Hajj"],
+["muminun",23,"Al-Mu'minun"],
+["nur",24,"An-Nur"],
+["furqan",25,"Al-Furqan"],
+["shuara",26,"Ash-Shu'ara"],
+["naml",27,"An-Naml"],
+["qasas",28,"Al-Qasas"],
+["ankabut",29,"Al-Ankabut"],
+["rum",30,"Ar-Rum"],
+["luqman",31,"Luqman"],
+["sajda",32,"As-Sajdah"],
+["ahzab",33,"Al-Ahzab"],
+["saba",34,"Saba"],
+["fatir",35,"Fatir"],
+["yasin",36,"Ya-Sin"],
+["yasin",36,"Yaseen"],
+["saffat",37,"As-Saffat"],
+["sad",38,"Sad"],
+["zumar",39,"Az-Zumar"],
+["ghafir",40,"Ghafir"],
+["fussilat",41,"Fussilat"],
+["shura",42,"Ash-Shura"],
+["zukhruf",43,"Az-Zukhruf"],
+["dukhan",44,"Ad-Dukhan"],
+["jathiya",45,"Al-Jathiyah"],
+["ahqaf",46,"Al-Ahqaf"],
+["muhammad",47,"Muhammad"],
+["fath",48,"Al-Fath"],
+["hujurat",49,"Al-Hujurat"],
+["qaf",50,"Qaf"],
+["dhariyat",51,"Adh-Dhariyat"],
+["tur",52,"At-Tur"],
+["najm",53,"An-Najm"],
+["qamar",54,"Al-Qamar"],
+["rahman",55,"Ar-Rahman"],
+["waqia",56,"Al-Waqi'ah"],
+["hadid",57,"Al-Hadid"],
+["mujadila",58,"Al-Mujadilah"],
+["hashr",59,"Al-Hashr"],
+["mumtahanah",60,"Al-Mumtahanah"],
+["saff",61,"As-Saff"],
+["jumuah",62,"Al-Jumu'ah"],
+["munafiqun",63,"Al-Munafiqun"],
+["taghabun",64,"At-Taghabun"],
+["talaq",65,"At-Talaq"],
+["tahrim",66,"At-Tahrim"],
+["mulk",67,"Al-Mulk"],
+["qalam",68,"Al-Qalam"],
+["haqqah",69,"Al-Haqqah"],
+["maarij",70,"Al-Ma'arij"],
+["nuh",71,"Nuh"],
+["jinn",72,"Al-Jinn"],
+["muzzammil",73,"Al-Muzzammil"],
+["muddaththir",74,"Al-Muddaththir"],
+["qiyamah",75,"Al-Qiyamah"],
+["insan",76,"Al-Insan"],
+["mursalat",77,"Al-Mursalat"],
+["naba",78,"An-Naba"],
+["naziat",79,"An-Nazi'at"],
+["abasa",80,"Abasa"],
+["takwir",81,"At-Takwir"],
+["infitar",82,"Al-Infitar"],
+["mutaffifin",83,"Al-Mutaffifin"],
+["inshiqaq",84,"Al-Inshiqaq"],
+["buruj",85,"Al-Buruj"],
+["tariq",86,"At-Tariq"],
+["ala",87,"Al-A'la"],
+["ghashiyah",88,"Al-Ghashiyah"],
+["fajr",89,"Al-Fajr"],
+["balad",90,"Al-Balad"],
+["shams",91,"Ash-Shams"],
+["layl",92,"Al-Layl"],
+["duha",93,"Ad-Duha"],
+["sharh",94,"Ash-Sharh"],
+["tin",95,"At-Tin"],
+["alaq",96,"Al-Alaq"],
+["qadr",97,"Al-Qadr"],
+["bayyinah",98,"Al-Bayyinah"],
+["zalzalah",99,"Az-Zalzalah"],
+["adiyat",100,"Al-Adiyat"],
+["qariah",101,"Al-Qari'ah"],
+["takathur",102,"At-Takathur"],
+["asr",103,"Al-Asr"],
+["humazah",104,"Al-Humazah"],
+["fil",105,"Al-Fil"],
+["quraysh",106,"Quraysh"],
+["maun",107,"Al-Ma'un"],
+["kawthar",108,"Al-Kawthar"],
+["kafirun",109,"Al-Kafirun"],
+["nasr",110,"An-Nasr"],
+["masad",111,"Al-Masad"],
+["ikhlas",112,"Al-Ikhlas"],
+["falaq",113,"Al-Falaq"],
+["nas",114,"An-Nas"]
+
 ];
 
 
 /* =================================
-   NORMALIZATION
+   NORMALISATION
 ================================= */
 
 function normalize(text){
@@ -464,15 +464,9 @@ function normalize(text){
     .toLowerCase()
     .normalize("NFD")
     .replace(/[\u0300-\u036f]/g,"")
-    .replace(/['’`]/g,"")
-    .replace(/[-_]/g," ")
-    .replace(/\bal\b/g," ")
-    .replace(/\bsurah\b/g," ")
-    .replace(/\bsourate\b/g," ")
-    .replace(/\bchapter\b/g," ")
-    .replace(/\bverset\b/g," ")
-    .replace(/\bverse\b/g," ")
-    .replace(/\bayah\b/g," ")
+    .replace(/['’]/g,"")
+    .replace(/[-]/g," ")
+    .replace(/\b(al|surah|sourate|verset|verse|ayah)\b/g,"")
     .replace(/\s+/g," ")
     .trim();
 
@@ -480,153 +474,94 @@ function normalize(text){
 
 
 /* =================================
-   LEVENSHTEIN DISTANCE
-   → permet les fautes de frappe
+   RECHERCHE INTELLIGENTE
 ================================= */
 
-function levenshtein(a,b){
+function findSurah(name){
 
-  const matrix=[];
-
-  for(let i=0;i<=b.length;i++){
-    matrix[i]=[i];
-  }
-
-  for(let j=0;j<=a.length;j++){
-    matrix[0][j]=j;
-  }
-
-  for(let i=1;i<=b.length;i++){
-
-    for(let j=1;j<=a.length;j++){
-
-      if(b.charAt(i-1)===a.charAt(j-1)){
-
-        matrix[i][j]=matrix[i-1][j-1];
-
-      }else{
-
-        matrix[i][j]=Math.min(
-          matrix[i-1][j-1]+1,
-          matrix[i][j-1]+1,
-          matrix[i-1][j]+1
-        );
-
-      }
-
-    }
-
-  }
-
-  return matrix[b.length][a.length];
-
-}
-
-
-/* =================================
-   SURAH SEARCH INTELLIGENCE
-================================= */
-
-function findBestSurah(input){
-
-  const query=normalize(input);
+  const query=normalize(name);
 
   if(!query)return null;
+
+
+  /* Correspondance exacte */
+
+  let result=
+    surahs.find(
+      s=>normalize(s[0])===query
+    );
+
+  if(result)return result;
+
+
+  /* Commence par */
+
+  result=
+    surahs.find(
+      s=>normalize(s[0]).startsWith(query)
+    );
+
+  if(result)return result;
+
+
+  /* Contient */
+
+  result=
+    surahs.find(
+      s=>normalize(s[0]).includes(query)
+    );
+
+  if(result)return result;
+
+
+  /*
+    Recherche lettre par lettre.
+    Exemple :
+    bq → baqara
+    fti → fatiha
+  */
 
   let best=null;
   let bestScore=0;
 
   for(const s of surahs){
 
-    const aliases=[
-      s[0],
-      s[2],
-      s[3]
-    ];
+    const target=normalize(s[0]);
 
-    for(const alias of aliases){
+    let score=0;
+    let index=0;
 
-      const target=normalize(alias);
+    for(const char of query){
 
-      let score=0;
+      const found=
+        target.indexOf(char,index);
 
-      /* Exact */
+      if(found!==-1){
 
-      if(query===target){
-        score=100;
-      }
-
-      /* Starts with */
-
-      else if(target.startsWith(query)){
-        score=90+(query.length/target.length)*5;
-      }
-
-      /* Query starts with target */
-
-      else if(query.startsWith(target)){
-        score=85;
-      }
-
-      else{
-
-        /* Word similarity */
-
-        const distance=
-          levenshtein(query,target);
-
-        const maxLength=
-          Math.max(query.length,target.length);
-
-        const similarity=
-          1-(distance/maxLength);
-
-        score=similarity*80;
-
-
-        /* Character overlap */
-
-        let common=0;
-
-        for(const char of query){
-
-          if(target.includes(char)){
-            common++;
-          }
-
-        }
-
-        const overlap=
-          common/Math.max(query.length,target.length);
-
-        score+=overlap*20;
-
-      }
-
-      /*
-        Short searches like "baq"
-        should strongly match Baqarah
-      */
-
-      if(
-        query.length>=2 &&
-        target.startsWith(query)
-      ){
-        score+=30;
-      }
-
-      if(score>bestScore){
-
-        bestScore=score;
-        best=s;
+        score++;
+        index=found+1;
 
       }
 
     }
 
+    const ratio=
+      score/query.length;
+
+    if(ratio>bestScore){
+
+      bestScore=ratio;
+      best=s;
+
+    }
+
   }
 
-  return bestScore>=45 ? best : null;
+  if(bestScore>=0.6){
+    return best;
+  }
+
+  return null;
 
 }
 
@@ -635,17 +570,17 @@ function findBestSurah(input){
    PARSE SEARCH
 ================================= */
 
-function parseSearch(query){
+function parseSearch(text){
 
-  const clean=normalize(query);
+  const query=normalize(text);
 
-  /*
-    2:255
-  */
 
-  let match=clean.match(
-    /^(\d{1,3})\s*:\s*(\d{1,3})$/
-  );
+  /* 2:255 */
+
+  let match=
+    query.match(
+      /^(\d{1,3})\s*:\s*(\d{1,3})$/
+    );
 
   if(match){
 
@@ -657,24 +592,26 @@ function parseSearch(query){
   }
 
 
-  /*
-    2 255
-  */
+  /* 2 255 */
 
-  match=clean.match(
-    /^(\d{1,3})\s+(\d{1,3})$/
-  );
+  match=
+    query.match(
+      /^(\d{1,3})\s+(\d{1,3})$/
+    );
 
   if(match){
 
-    const a=Number(match[1]);
-    const b=Number(match[2]);
+    const surah=
+      Number(match[1]);
 
-    if(a>=1 && a<=114){
+    const verse=
+      Number(match[2]);
+
+    if(surah>=1 && surah<=114){
 
       return{
-        surah:a,
-        verse:b
+        surah,
+        verse
       };
 
     }
@@ -682,93 +619,33 @@ function parseSearch(query){
   }
 
 
-  /*
-    Anything ending with a number.
+  /* baq 255 */
 
-    baq 255
-    baqarah 255
-    bq 255
-    la vache 255
-  */
-
-  match=clean.match(
-    /^(.+?)\s+(\d{1,3})$/
-  );
+  match=
+    query.match(
+      /^(.+?)\s+(\d{1,3})$/
+    );
 
   if(!match)return null;
 
   const name=match[1];
   const verse=Number(match[2]);
 
-  const found=findBestSurah(name);
+  const found=
+    findSurah(name);
 
   if(!found)return null;
 
   return{
     surah:found[1],
-    verse:verse
+    verse
   };
 
 }
 
 
 /* =================================
-   SEARCH
-================================= */
-
-async function searchVerse(){
-
-  const query=searchInput.value.trim();
-
-  if(!query)return;
-
-  result.innerHTML=
-  `<div class="message">Loading...</div>`;
-
-  try{
-
-    const parsed=parseSearch(query);
-
-    if(!parsed){
-      throw new Error();
-    }
-
-    if(
-      parsed.surah<1 ||
-      parsed.surah>114 ||
-      parsed.verse<1
-    ){
-      throw new Error();
-    }
-
-    await loadVerse(
-      parsed.surah,
-      parsed.verse
-    );
-
-  }catch(error){
-
-    result.innerHTML=`
-      <div class="message">
-        Verset introuvable.
-        <div class="suggestions">
-          Essaie par exemple :
-          <b>baq 255</b>,
-          <b>bq 255</b>,
-          <b>fati 1</b>,
-          <b>rahm 13</b>,
-          <b>2:255</b>
-        </div>
-      </div>
-    `;
-
-  }
-
-}
-
-
-/* =================================
-   LOAD VERSE
+   CHARGER UN VERSET
 ================================= */
 
 async function loadVerse(surah,verse){
@@ -776,38 +653,43 @@ async function loadVerse(surah,verse){
   if(currentAudio){
 
     currentAudio.pause();
-    currentAudio=null;
 
   }
 
   currentSurah=surah;
   currentVerse=verse;
 
+  result.innerHTML=
+    `<div class="message">Chargement...</div>`;
+
+
   try{
 
-    const responses=await Promise.all([
+    const responses=
+      await Promise.all([
 
-      fetch(
-        `${API}/ayah/${surah}:${verse}/quran-uthmani`
-      ),
+        fetch(
+          `${API}/ayah/${surah}:${verse}/quran-uthmani`
+        ),
 
-      fetch(
-        `${API}/ayah/${surah}:${verse}/fr.hamidullah`
-      ),
+        fetch(
+          `${API}/ayah/${surah}:${verse}/fr.hamidullah`
+        ),
 
-      fetch(
-        `${API}/ayah/${surah}:${verse}/en.transliteration`
-      ),
+        fetch(
+          `${API}/ayah/${surah}:${verse}/en.transliteration`
+        ),
 
-      fetch(
-        `${API}/ayah/${surah}:${verse}/ar.alafasy`
-      ),
+        fetch(
+          `${API}/ayah/${surah}:${verse}/ar.alafasy`
+        ),
 
-      fetch(
-        `${API}/surah/${surah}`
-      )
+        fetch(
+          `${API}/surah/${surah}`
+        )
 
-    ]);
+      ]);
+
 
     const[
       arabicResponse,
@@ -817,30 +699,24 @@ async function loadVerse(surah,verse){
       surahResponse
     ]=responses;
 
+
     const[
       arabicData,
       frenchData,
       translitData,
       audioData,
       surahData
-    ]=await Promise.all([
+    ]=
+      await Promise.all([
 
-      arabicResponse.json(),
-      frenchResponse.json(),
-      translitResponse.json(),
-      audioResponse.json(),
-      surahResponse.json()
+        arabicResponse.json(),
+        frenchResponse.json(),
+        translitResponse.json(),
+        audioResponse.json(),
+        surahResponse.json()
 
-    ]);
+      ]);
 
-    if(
-      !arabicData.data ||
-      !frenchData.data ||
-      !translitData.data ||
-      !audioData.data
-    ){
-      throw new Error();
-    }
 
     const arabic=
       arabicData.data.text;
@@ -857,7 +733,7 @@ async function loadVerse(surah,verse){
     const surahName=
       arabicData.data.surah.englishName;
 
-    const totalVerses=
+    const total=
       surahData.data.numberOfAyahs;
 
 
@@ -873,8 +749,7 @@ async function loadVerse(surah,verse){
 
           <button
             class="play"
-            id="playBtn"
-            type="button">
+            id="playBtn">
             ▶
           </button>
 
@@ -915,25 +790,29 @@ async function loadVerse(surah,verse){
         </audio>
 
 
+        <!-- FLECHES -->
+
         <div class="navigation">
 
           <button
-            class="nav-btn"
-            id="prevBtn"
-            type="button"
-            ${surah===1 && verse===1?"disabled":""}>
-            ← Précédent
+            class="arrow"
+            id="previous"
+            title="Verset précédent"
+            ${surah===1 && verse===1 ? "disabled":""}>
+            ←
           </button>
 
-          <span class="page">
+
+          <span class="verse-number">
             ${surah}:${verse}
           </span>
 
+
           <button
-            class="nav-btn"
-            id="nextBtn"
-            type="button">
-            Suivant →
+            class="arrow"
+            id="next"
+            title="Verset suivant">
+            →
           </button>
 
         </div>
@@ -943,57 +822,104 @@ async function loadVerse(surah,verse){
     `;
 
 
-    const playBtn=
+    /* AUDIO */
+
+    const play=
       document.getElementById("playBtn");
 
     currentAudio=
       document.getElementById("audio");
 
 
-    playBtn.onclick=async()=>{
+    play.onclick=
+      async()=>{
 
-      if(currentAudio.paused){
-
-        try{
+        if(currentAudio.paused){
 
           await currentAudio.play();
 
-          playBtn.textContent="❚❚";
+          play.textContent="❚❚";
 
-        }catch(error){}
+        }else{
 
-      }else{
+          currentAudio.pause();
 
-        currentAudio.pause();
+          play.textContent="▶";
 
-        playBtn.textContent="▶";
+        }
 
-      }
-
-    };
+      };
 
 
-    currentAudio.onended=()=>{
-
-      playBtn.textContent="▶";
-
-    };
-
-
-    document.getElementById("prevBtn")
-      .onclick=previousVerse;
-
-    document.getElementById("nextBtn")
-      .onclick=nextVerse;
+    currentAudio.onended=
+      ()=>{
+        play.textContent="▶";
+      };
 
 
-    /*
-      Met à jour la recherche avec
-      le verset actuel
-    */
+    /* FLECHE PRECEDENTE */
+
+    document.getElementById("previous")
+      .onclick=
+      async()=>{
+
+        if(currentVerse>1){
+
+          await loadVerse(
+            currentSurah,
+            currentVerse-1
+          );
+
+        }else if(currentSurah>1){
+
+          const response=
+            await fetch(
+              `${API}/surah/${currentSurah-1}`
+            );
+
+          const data=
+            await response.json();
+
+          await loadVerse(
+            currentSurah-1,
+            data.data.numberOfAyahs
+          );
+
+        }
+
+      };
+
+
+    /* FLECHE SUIVANTE */
+
+    document.getElementById("next")
+      .onclick=
+      async()=>{
+
+        if(currentVerse<total){
+
+          await loadVerse(
+            currentSurah,
+            currentVerse+1
+          );
+
+        }else if(currentSurah<114){
+
+          await loadVerse(
+            currentSurah+1,
+            1
+          );
+
+        }
+
+      };
+
+
+    /* Met à jour la recherche */
 
     searchInput.value=
-      `${surah}:${verse}`;
+      `${currentSurah}:${currentVerse}`;
+
 
   }catch(error){
 
@@ -1008,95 +934,49 @@ async function loadVerse(surah,verse){
 
 
 /* =================================
-   PREVIOUS
+   RECHERCHE
 ================================= */
 
-async function previousVerse(){
+async function searchVerse(){
 
-  if(!currentSurah)return;
+  const query=
+    searchInput.value.trim();
 
-  if(currentVerse>1){
+  if(!query)return;
 
-    await loadVerse(
-      currentSurah,
-      currentVerse-1
-    );
+  const parsed=
+    parseSearch(query);
+
+  if(!parsed){
+
+    result.innerHTML=`
+      <div class="message">
+
+        Verset introuvable.
+
+        <br><br>
+
+        <small>
+          Essaie :
+          <b>baq 255</b>,
+          <b>fati 1</b>,
+          <b>rahm 13</b>,
+          <b>mulk 2</b>
+          ou
+          <b>2:255</b>
+        </small>
+
+      </div>
+    `;
 
     return;
 
   }
 
-  if(currentSurah>1){
-
-    try{
-
-      const response=
-        await fetch(
-          `${API}/surah/${currentSurah-1}`
-        );
-
-      const data=
-        await response.json();
-
-      const last=
-        data.data.numberOfAyahs;
-
-      await loadVerse(
-        currentSurah-1,
-        last
-      );
-
-    }catch(error){}
-
-  }
-
-}
-
-
-/* =================================
-   NEXT
-================================= */
-
-async function nextVerse(){
-
-  if(!currentSurah)return;
-
-  try{
-
-    const response=
-      await fetch(
-        `${API}/surah/${currentSurah}`
-      );
-
-    const data=
-      await response.json();
-
-    const total=
-      data.data.numberOfAyahs;
-
-
-    if(currentVerse<total){
-
-      await loadVerse(
-        currentSurah,
-        currentVerse+1
-      );
-
-      return;
-
-    }
-
-
-    if(currentSurah<114){
-
-      await loadVerse(
-        currentSurah+1,
-        1
-      );
-
-    }
-
-  }catch(error){}
+  await loadVerse(
+    parsed.surah,
+    parsed.verse
+  );
 
 }
 
@@ -1105,14 +985,17 @@ async function nextVerse(){
    EVENTS
 ================================= */
 
-searchBtn.onclick=searchVerse;
+searchBtn.onclick=
+  searchVerse;
 
 searchInput.addEventListener(
   "keydown",
-  e=>{
-    if(e.key==="Enter"){
+  event=>{
+
+    if(event.key==="Enter"){
       searchVerse();
     }
+
   }
 );
 

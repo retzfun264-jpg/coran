@@ -8,60 +8,38 @@
 <style>
 :root{
   --bg:#191919;
-  --card:#202020;
-  --card2:#252525;
-  --border:rgba(255,255,255,.08);
-  --text:#eeeeee;
-  --muted:#8f8f8f;
-  --green:#6fa58a;
-  --green2:#477d67;
-  --gold:#c7a86b;
+  --card:#222222;
+  --card2:#292929;
+  --border:rgba(255,255,255,.09);
+  --text:#f2f2f2;
+  --muted:#999;
+  --gold:#d8ad5b;
+  --gold2:#b98735;
 }
 
-*{
-  box-sizing:border-box;
-}
+*{box-sizing:border-box}
 
 html,body{
-  margin:0!important;
-  padding:0!important;
+  margin:0;
+  padding:0;
   width:100%;
   min-height:100%;
-  background:#191919!important;
+  background:transparent!important;
 }
 
 body{
+  font-family:-apple-system,BlinkMacSystemFont,"Segoe UI",Arial,sans-serif;
   color:var(--text);
-  font-family:
-    -apple-system,
-    BlinkMacSystemFont,
-    "Segoe UI",
-    Roboto,
-    Arial,
-    sans-serif;
-}
-
-button,input{
-  font:inherit;
-}
-
-button{
-  cursor:pointer;
 }
 
 .app{
   width:100%;
-  max-width:620px;
+  max-width:700px;
   margin:auto;
-  padding:14px;
+  padding:12px;
 }
 
-/* HEADER */
-
 .header{
-  display:flex;
-  justify-content:space-between;
-  align-items:center;
   margin-bottom:12px;
 }
 
@@ -69,231 +47,187 @@ button{
   display:flex;
   align-items:center;
   gap:9px;
+  margin-bottom:3px;
 }
 
-.icon{
-  width:34px;
-  height:34px;
+.title-icon{
+  width:31px;
+  height:31px;
   display:grid;
   place-items:center;
-  border-radius:10px;
-  background:rgba(111,165,138,.12);
-  color:var(--green);
+  border-radius:9px;
+  background:rgba(216,173,91,.12);
+  color:var(--gold);
   font-size:17px;
 }
 
 h1{
   margin:0;
-  font-size:18px;
-  letter-spacing:-.5px;
+  font-size:21px;
+  letter-spacing:-.7px;
 }
 
 .subtitle{
-  margin:2px 0 0;
+  margin:0;
   color:var(--muted);
-  font-size:10px;
+  font-size:11px;
 }
 
 /* SEARCH */
+
+.search-card{
+  padding:11px;
+  margin-bottom:10px;
+  border:1px solid var(--border);
+  border-radius:13px;
+  background:var(--card);
+}
 
 .search{
   display:grid;
   grid-template-columns:1fr auto;
   gap:7px;
-  margin-bottom:10px;
 }
 
 input{
   width:100%;
-  padding:9px 11px;
+  padding:10px 11px;
   border:1px solid var(--border);
   border-radius:9px;
   outline:none;
-  background:#151515;
+  background:#171717;
   color:var(--text);
-  font-size:11px;
-}
-
-input::placeholder{
-  color:#666;
+  font-size:12px;
 }
 
 input:focus{
-  border-color:rgba(111,165,138,.55);
-  box-shadow:0 0 0 3px rgba(111,165,138,.07);
+  border-color:rgba(216,173,91,.55);
 }
 
-.btn{
-  border:1px solid var(--border);
-  border-radius:9px;
-  padding:8px 12px;
-  background:var(--card2);
-  color:var(--text);
-  font-size:11px;
-  font-weight:700;
-}
-
-.btn:hover{
-  border-color:rgba(111,165,138,.4);
-}
-
-.btn-primary{
+button{
   border:0;
-  background:linear-gradient(135deg,var(--green),var(--green2));
-  color:#07130d;
+  cursor:pointer;
+  font:inherit;
 }
 
-/* QURAN CARD */
+.search-btn{
+  padding:0 15px;
+  border-radius:9px;
+  background:linear-gradient(135deg,#e1bb70,#b98735);
+  color:#18120a;
+  font-size:12px;
+  font-weight:800;
+}
 
-.quran{
+/* VERSE */
+
+.verse-card{
+  padding:17px;
   border:1px solid var(--border);
-  border-radius:14px;
+  border-radius:15px;
   background:
-    linear-gradient(
-      145deg,
-      rgba(111,165,138,.035),
-      transparent 45%
-    ),
+    linear-gradient(145deg,rgba(216,173,91,.035),transparent 50%),
     var(--card);
-  overflow:hidden;
 }
 
-.quran-inner{
-  padding:16px;
-}
-
-/* INFO */
-
-.info{
+.verse-top{
   display:flex;
   justify-content:space-between;
   align-items:center;
   gap:10px;
-  padding-bottom:12px;
-  border-bottom:1px solid var(--border);
-}
-
-.surah{
-  font-size:13px;
-  font-weight:800;
+  margin-bottom:14px;
 }
 
 .reference{
-  margin-top:2px;
-  color:var(--muted);
-  font-size:10px;
-}
-
-.badge{
-  padding:4px 8px;
-  border:1px solid rgba(199,168,107,.18);
-  border-radius:50px;
   color:var(--gold);
-  background:rgba(199,168,107,.06);
-  font-size:8px;
+  font-size:11px;
   font-weight:800;
 }
 
-/* ARABIC */
+.play{
+  width:31px;
+  height:31px;
+  display:grid;
+  place-items:center;
+  border-radius:50%;
+  background:rgba(216,173,91,.12);
+  color:var(--gold);
+  font-size:13px;
+}
 
 .arabic{
-  margin:20px 4px 15px;
-  color:#f1eadc;
-  font-family:
-    "Amiri",
-    "Noto Naskh Arabic",
-    "Times New Roman",
-    serif;
-  font-size:25px;
-  line-height:2;
+  margin:4px 0 17px;
+  font-family:"Amiri","Noto Naskh Arabic","Traditional Arabic",serif;
+  font-size:28px;
+  line-height:1.9;
   text-align:right;
   direction:rtl;
 }
 
-/* TRANSLITERATION */
-
 .translit{
-  padding:11px 12px;
-  border-left:2px solid var(--green);
-  border-radius:0 8px 8px 0;
-  background:rgba(111,165,138,.045);
-  color:#b8b8b8;
-  font-size:10px;
-  line-height:1.6;
+  margin-bottom:13px;
+  color:#d8d8d8;
+  font-size:12px;
+  line-height:1.65;
   font-style:italic;
 }
 
-/* TRANSLATION */
-
 .translation{
-  margin-top:11px;
-  color:#d1d1d1;
-  font-size:11px;
+  padding-top:12px;
+  border-top:1px solid var(--border);
+  color:#bdbdbd;
+  font-size:12px;
   line-height:1.65;
 }
 
-/* CONTROLS */
-
-.controls{
-  display:flex;
-  justify-content:space-between;
-  align-items:center;
-  gap:8px;
-  margin-top:15px;
-  padding-top:12px;
-  border-top:1px solid var(--border);
-}
-
-.nav{
-  display:flex;
-  gap:6px;
-}
-
-.nav button{
-  width:32px;
-  height:29px;
-  padding:0;
-}
-
-.counter{
-  color:var(--muted);
+.label{
+  display:block;
+  margin-bottom:5px;
+  color:var(--gold);
   font-size:9px;
+  font-weight:800;
+  letter-spacing:.08em;
+  text-transform:uppercase;
 }
 
-/* LOADING */
+.audio{
+  display:none;
+  width:100%;
+  height:34px;
+  margin-top:13px;
+}
 
-.loading{
-  padding:30px 10px;
-  text-align:center;
+.audio.show{
+  display:block;
+}
+
+.message{
+  padding:20px;
+  border:1px dashed var(--border);
+  border-radius:12px;
   color:var(--muted);
-  font-size:11px;
-}
-
-.error{
-  padding:20px 10px;
   text-align:center;
-  color:#c77c7c;
   font-size:11px;
 }
 
 /* MOBILE */
 
-@media(max-width:450px){
+@media(max-width:480px){
 
   .app{
-    padding:10px;
-  }
-
-  .arabic{
-    font-size:22px;
+    padding:9px;
   }
 
   .search{
     grid-template-columns:1fr;
   }
 
-  .search .btn{
-    width:100%;
+  .search-btn{
+    height:37px;
+  }
+
+  .arabic{
+    font-size:25px;
   }
 }
 </style>
@@ -304,687 +238,584 @@ input:focus{
 <main class="app">
 
 <header class="header">
-
   <div class="title">
-
-    <div class="icon">☾</div>
-
-    <div>
-      <h1>Qur'an</h1>
-      <p class="subtitle">Read, reflect, remember.</p>
-    </div>
-
+    <div class="title-icon">☪</div>
+    <h1>Quran</h1>
   </div>
-
-  <span class="badge">QURAN</span>
-
+  <p class="subtitle">Search a surah and verse</p>
 </header>
 
+<section class="search-card">
 
-<div class="search">
+  <div class="search">
 
-  <input
-    id="searchInput"
-    type="text"
-    placeholder="Ex : Al Baqarah 255"
-    autocomplete="off"
-  >
+    <input
+      id="searchInput"
+      type="text"
+      placeholder="Ex : Al Baqara 255"
+      autocomplete="off"
+    >
 
-  <button
-    class="btn btn-primary"
-    id="searchBtn"
-    type="button"
-  >
-    Rechercher
-  </button>
-
-</div>
-
-
-<section class="quran">
-
-<div class="quran-inner">
-
-  <div id="content">
-
-    <div class="loading">
-      Chargement du verset...
-    </div>
+    <button
+      class="search-btn"
+      id="searchBtn"
+      type="button">
+      Search
+    </button>
 
   </div>
 
-</div>
+</section>
+
+<section id="result">
+
+  <div class="message">
+    Search for a verse to begin.
+  </div>
 
 </section>
 
 </main>
 
-
 <script>
+
+/* ================================
+   API
+================================ */
 
 const API =
 "https://api.alquran.cloud/v1";
 
-const ARABIC =
-"quran-uthmani";
-
-const FRENCH =
-"fr.hamidullah";
-
-const STORAGE =
-"quran_widget_1";
-
-let currentSurah = 2;
-let currentAyah = 255;
+/*
+  API utilisée :
+  AlQuran Cloud
+*/
 
 
-/* =========================
-   ELEMENT
-========================= */
+/* ================================
+   ELEMENTS
+================================ */
 
-function $(id){
-  return document.getElementById(id);
-}
+const searchInput =
+document.getElementById("searchInput");
 
+const searchBtn =
+document.getElementById("searchBtn");
 
-/* =========================
-   SEARCH PARSER
-========================= */
-
-function parseSearch(value){
-
-  value =
-    value
-    .trim()
-    .toLowerCase()
-    .replace(/[’']/g,"")
-    .replace(/\s+/g," ");
-
-  /*
-    Formats acceptés :
-
-    2:255
-    2 255
-    Al Baqarah 255
-    al-baqarah 255
-    Baqarah 255
-  */
-
-  const direct =
-    value.match(/^(\d{1,3})\s*[: ]\s*(\d{1,3})$/);
-
-  if(direct){
-
-    return {
-      surah:Number(direct[1]),
-      ayah:Number(direct[2])
-    };
-
-  }
+const result =
+document.getElementById("result");
 
 
-  const match =
-    value.match(
-      /^(.+?)\s+(\d{1,3})$/
-    );
-
-  if(match){
-
-    const name =
-      normalize(match[1]);
-
-    const ayah =
-      Number(match[2]);
-
-    const found =
-      SURAH_NAMES.find(
-        s =>
-          normalize(s.name) === name ||
-          normalize(s.english) === name ||
-          normalize(s.translit) === name
-      );
-
-    if(found){
-
-      return {
-        surah:found.id,
-        ayah
-      };
-
-    }
-  }
-
-  return null;
-}
-
-
-/* =========================
-   NORMALIZE
-========================= */
-
-function normalize(text){
-
-  return text
-    .normalize("NFD")
-    .replace(/[\u0300-\u036f]/g,"")
-    .replace(/[-']/g," ")
-    .replace(/\s+/g," ")
-    .trim();
-
-}
-
-
-/* =========================
+/* ================================
    SURAH NAMES
-========================= */
+================================ */
 
-const SURAH_NAMES=[
+const surahs = {
 
-{id:1,name:"Al-Fatiha",english:"Al Fatiha",translit:"Fatiha"},
-{id:2,name:"Al-Baqarah",english:"Al Baqarah",translit:"Baqarah"},
-{id:3,name:"Aal-E-Imran",english:"Aal Imran",translit:"Imran"},
-{id:4,name:"An-Nisa",english:"An Nisa",translit:"Nisa"},
-{id:5,name:"Al-Ma'idah",english:"Al Maidah",translit:"Maidah"},
-{id:6,name:"Al-An'am",english:"Al Anam",translit:"Anam"},
-{id:7,name:"Al-A'raf",english:"Al Araf",translit:"Araf"},
-{id:8,name:"Al-Anfal",english:"Al Anfal",translit:"Anfal"},
-{id:9,name:"At-Tawbah",english:"At Tawbah",translit:"Tawbah"},
-{id:10,name:"Yunus",english:"Yunus",translit:"Yunus"},
-{id:11,name:"Hud",english:"Hud",translit:"Hud"},
-{id:12,name:"Yusuf",english:"Yusuf",translit:"Yusuf"},
-{id:13,name:"Ar-Ra'd",english:"Ar Rad",translit:"Rad"},
-{id:14,name:"Ibrahim",english:"Ibrahim",translit:"Ibrahim"},
-{id:15,name:"Al-Hijr",english:"Al Hijr",translit:"Hijr"},
-{id:16,name:"An-Nahl",english:"An Nahl",translit:"Nahl"},
-{id:17,name:"Al-Isra",english:"Al Isra",translit:"Isra"},
-{id:18,name:"Al-Kahf",english:"Al Kahf",translit:"Kahf"},
-{id:19,name:"Maryam",english:"Maryam",translit:"Maryam"},
-{id:20,name:"Ta-Ha",english:"Ta Ha",translit:"Ta Ha"},
-{id:21,name:"Al-Anbya",english:"Al Anbiya",translit:"Anbiya"},
-{id:22,name:"Al-Hajj",english:"Al Hajj",translit:"Hajj"},
-{id:23,name:"Al-Mu'minun",english:"Al Muminun",translit:"Muminun"},
-{id:24,name:"An-Nur",english:"An Nur",translit:"Nur"},
-{id:25,name:"Al-Furqan",english:"Al Furqan",translit:"Furqan"},
-{id:26,name:"Ash-Shu'ara",english:"Ash Shuara",translit:"Shuara"},
-{id:27,name:"An-Naml",english:"An Naml",translit:"Naml"},
-{id:28,name:"Al-Qasas",english:"Al Qasas",translit:"Qasas"},
-{id:29,name:"Al-Ankabut",english:"Al Ankabut",translit:"Ankabut"},
-{id:30,name:"Ar-Rum",english:"Ar Rum",translit:"Rum"},
-{id:31,name:"Luqman",english:"Luqman",translit:"Luqman"},
-{id:32,name:"As-Sajdah",english:"As Sajdah",translit:"Sajdah"},
-{id:33,name:"Al-Ahzab",english:"Al Ahzab",translit:"Ahzab"},
-{id:34,name:"Saba",english:"Saba",translit:"Saba"},
-{id:35,name:"Fatir",english:"Fatir",translit:"Fatir"},
-{id:36,name:"Ya-Sin",english:"Ya Sin",translit:"Yasin"},
-{id:37,name:"As-Saffat",english:"As Saffat",translit:"Saffat"},
-{id:38,name:"Sad",english:"Sad",translit:"Sad"},
-{id:39,name:"Az-Zumar",english:"Az Zumar",translit:"Zumar"},
-{id:40,name:"Ghafir",english:"Ghafir",translit:"Ghafir"},
-{id:41,name:"Fussilat",english:"Fussilat",translit:"Fussilat"},
-{id:42,name:"Ash-Shura",english:"Ash Shura",translit:"Shura"},
-{id:43,name:"Az-Zukhruf",english:"Az Zukhruf",translit:"Zukhruf"},
-{id:44,name:"Ad-Dukhan",english:"Ad Dukhan",translit:"Dukhan"},
-{id:45,name:"Al-Jathiyah",english:"Al Jathiyah",translit:"Jathiyah"},
-{id:46,name:"Al-Ahqaf",english:"Al Ahqaf",translit:"Ahqaf"},
-{id:47,name:"Muhammad",english:"Muhammad",translit:"Muhammad"},
-{id:48,name:"Al-Fath",english:"Al Fath",translit:"Fath"},
-{id:49,name:"Al-Hujurat",english:"Al Hujurat",translit:"Hujurat"},
-{id:50,name:"Qaf",english:"Qaf",translit:"Qaf"},
-{id:51,name:"Adh-Dhariyat",english:"Adh Dhariyat",translit:"Dhariyat"},
-{id:52,name:"At-Tur",english:"At Tur",translit:"Tur"},
-{id:53,name:"An-Najm",english:"An Najm",translit:"Najm"},
-{id:54,name:"Al-Qamar",english:"Al Qamar",translit:"Qamar"},
-{id:55,name:"Ar-Rahman",english:"Ar Rahman",translit:"Rahman"},
-{id:56,name:"Al-Waqiah",english:"Al Waqiah",translit:"Waqiah"},
-{id:57,name:"Al-Hadid",english:"Al Hadid",translit:"Hadid"},
-{id:58,name:"Al-Mujadilah",english:"Al Mujadilah",translit:"Mujadilah"},
-{id:59,name:"Al-Hashr",english:"Al Hashr",translit:"Hashr"},
-{id:60,name:"Al-Mumtahanah",english:"Al Mumtahanah",translit:"Mumtahanah"},
-{id:61,name:"As-Saff",english:"As Saff",translit:"Saff"},
-{id:62,name:"Al-Jumuah",english:"Al Jumuah",translit:"Jumuah"},
-{id:63,name:"Al-Munafiqun",english:"Al Munafiqun",translit:"Munafiqun"},
-{id:64,name:"At-Taghabun",english:"At Taghabun",translit:"Taghabun"},
-{id:65,name:"At-Talaq",english:"At Talaq",translit:"Talaq"},
-{id:66,name:"At-Tahrim",english:"At Tahrim",translit:"Tahrim"},
-{id:67,name:"Al-Mulk",english:"Al Mulk",translit:"Mulk"},
-{id:68,name:"Al-Qalam",english:"Al Qalam",translit:"Qalam"},
-{id:69,name:"Al-Haqqah",english:"Al Haqqah",translit:"Haqqah"},
-{id:70,name:"Al-Maarij",english:"Al Maarij",translit:"Maarij"},
-{id:71,name:"Nuh",english:"Nuh",translit:"Nuh"},
-{id:72,name:"Al-Jinn",english:"Al Jinn",translit:"Jinn"},
-{id:73,name:"Al-Muzzammil",english:"Al Muzzammil",translit:"Muzzammil"},
-{id:74,name:"Al-Muddaththir",english:"Al Muddaththir",translit:"Muddaththir"},
-{id:75,name:"Al-Qiyamah",english:"Al Qiyamah",translit:"Qiyamah"},
-{id:76,name:"Al-Insan",english:"Al Insan",translit:"Insan"},
-{id:77,name:"Al-Mursalat",english:"Al Mursalat",translit:"Mursalat"},
-{id:78,name:"An-Naba",english:"An Naba",translit:"Naba"},
-{id:79,name:"An-Nazi'at",english:"An Naziat",translit:"Naziat"},
-{id:80,name:"Abasa",english:"Abasa",translit:"Abasa"},
-{id:81,name:"At-Takwir",english:"At Takwir",translit:"Takwir"},
-{id:82,name:"Al-Infitar",english:"Al Infitar",translit:"Infitar"},
-{id:83,name:"Al-Mutaffifin",english:"Al Mutaffifin",translit:"Mutaffifin"},
-{id:84,name:"Al-Inshiqaq",english:"Al Inshiqaq",translit:"Inshiqaq"},
-{id:85,name:"Al-Buruj",english:"Al Buruj",translit:"Buruj"},
-{id:86,name:"At-Tariq",english:"At Tariq",translit:"Tariq"},
-{id:87,name:"Al-Ala",english:"Al Ala",translit:"Ala"},
-{id:88,name:"Al-Ghashiyah",english:"Al Ghashiyah",translit:"Ghashiyah"},
-{id:89,name:"Al-Fajr",english:"Al Fajr",translit:"Fajr"},
-{id:90,name:"Al-Balad",english:"Al Balad",translit:"Balad"},
-{id:91,name:"Ash-Shams",english:"Ash Shams",translit:"Shams"},
-{id:92,name:"Al-Layl",english:"Al Layl",translit:"Layl"},
-{id:93,name:"Ad-Duha",english:"Ad Duha",translit:"Duha"},
-{id:94,name:"Ash-Sharh",english:"Ash Sharh",translit:"Sharh"},
-{id:95,name:"At-Tin",english:"At Tin",translit:"Tin"},
-{id:96,name:"Al-Alaq",english:"Al Alaq",translit:"Alaq"},
-{id:97,name:"Al-Qadr",english:"Al Qadr",translit:"Qadr"},
-{id:98,name:"Al-Bayyinah",english:"Al Bayyinah",translit:"Bayyinah"},
-{id:99,name:"Az-Zalzalah",english:"Az Zalzalah",translit:"Zalzalah"},
-{id:100,name:"Al-Adiyat",english:"Al Adiyat",translit:"Adiyat"},
-{id:101,name:"Al-Qariah",english:"Al Qariah",translit:"Qariah"},
-{id:102,name:"At-Takathur",english:"At Takathur",translit:"Takathur"},
-{id:103,name:"Al-Asr",english:"Al Asr",translit:"Asr"},
-{id:104,name:"Al-Humazah",english:"Al Humazah",translit:"Humazah"},
-{id:105,name:"Al-Fil",english:"Al Fil",translit:"Fil"},
-{id:106,name:"Quraysh",english:"Quraysh",translit:"Quraysh"},
-{id:107,name:"Al-Ma'un",english:"Al Maun",translit:"Maun"},
-{id:108,name:"Al-Kawthar",english:"Al Kawthar",translit:"Kawthar"},
-{id:109,name:"Al-Kafirun",english:"Al Kafirun",translit:"Kafirun"},
-{id:110,name:"An-Nasr",english:"An Nasr",translit:"Nasr"},
-{id:111,name:"Al-Masad",english:"Al Masad",translit:"Masad"},
-{id:112,name:"Al-Ikhlas",english:"Al Ikhlas",translit:"Ikhlas"},
-{id:113,name:"Al-Falaq",english:"Al Falaq",translit:"Falaq"},
-{id:114,name:"An-Nas",english:"An Nas",translit:"Nas"}
+"fatiha":1,
+"al fatiha":1,
+"fatihah":1,
 
-];
+"baqara":2,
+"al baqara":2,
+"baqarah":2,
+
+"imran":3,
+"al imran":3,
+
+"nisa":4,
+"an nisa":4,
+
+"maidah":5,
+"al maidah":5,
+
+"anam":6,
+"al anam":6,
+
+"araf":7,
+"al araf":7,
+
+"anfal":8,
+"al anfal":8,
+
+"tawba":9,
+"at tawba":9,
+
+"yunus":10,
+"yusuf":12,
+
+"kahf":18,
+"al kahf":18,
+
+"maryam":19,
+
+"ta ha":20,
+"taha":20,
+
+"anbiya":21,
+
+"hajj":22,
+
+"muminun":23,
+
+"furqan":25,
+
+"shuara":26,
+
+"naml":27,
+
+"qasas":28,
+
+"ankabut":29,
+
+"rum":30,
+
+"luqman":31,
+
+"ahzab":33,
+
+"yasin":36,
+"ya sin":36,
+
+"saffat":37,
+
+"zumar":39,
+
+"ghafir":40,
+
+"fussilat":41,
+
+"shura":42,
+
+"zukhruf":43,
+
+"dukhan":44,
+
+"jathiya":45,
+
+"ahqaf":46,
+
+"muhammad":47,
+
+"fath":48,
+
+"hujurat":49,
+
+"qaf":50,
+
+"dhariyat":51,
+
+"tur":52,
+
+"najm":53,
+
+"qamar":54,
+
+"rahman":55,
+"ar rahman":55,
+
+"waqia":56,
+
+"hadid":57,
+
+"mujadila":58,
+
+"hashr":59,
+
+"mumtahanah":60,
+
+"saff":61,
+
+"jumuah":62,
+
+"munafiqun":63,
+
+"taghabun":64,
+
+"talaq":65,
+
+"tahrim":66,
+
+"mulk":67,
+"al mulk":67,
+
+"qalam":68,
+
+"haqqah":69,
+
+"maarij":70,
+
+"nuh":71,
+
+"jinn":72,
+
+"muzzammil":73,
+
+"muddaththir":74,
+
+"qiyamah":75,
+
+"insan":76,
+
+"mursalat":77,
+
+"naba":78,
+
+"naziat":79,
+
+"abasa":80,
+
+"takwir":81,
+
+"infitar":82,
+
+"mutaffifin":83,
+
+"inshiqaq":84,
+
+"buruj":85,
+
+"tariq":86,
+
+"ala":87,
+
+"ghashiyah":88,
+
+"fajr":89,
+
+"balad":90,
+
+"shams":91,
+
+"layl":92,
+
+"duha":93,
+
+"sharh":94,
+
+"tin":95,
+
+"alaq":96,
+
+"qadr":97,
+
+"bayyinah":98,
+
+"zalzalah":99,
+
+"adiyat":100,
+
+"qariah":101,
+
+"takathur":102,
+
+"asr":103,
+
+"humazah":104,
+
+"fil":105,
+
+"quraysh":106,
+
+"maun":107,
+
+"kawthar":108,
+
+"kafirun":109,
+
+"nasr":110,
+
+"masad":111,
+
+"ikhlas":112,
+
+"falaq":113,
+
+"nas":114
+
+};
 
 
-/* =========================
-   LOAD LAST VERSE
-========================= */
+/* ================================
+   SEARCH
+================================ */
 
-try{
+async function searchVerse(){
 
-  const saved =
-    JSON.parse(
-      localStorage.getItem(STORAGE)
-    );
+  const query =
+    searchInput.value
+      .trim()
+      .toLowerCase();
 
-  if(saved){
-
-    currentSurah =
-      saved.surah || 2;
-
-    currentAyah =
-      saved.ayah || 255;
-
+  if(!query){
+    return;
   }
 
-}catch{}
-
-
-/* =========================
-   SAVE
-========================= */
-
-function save(){
-
-  localStorage.setItem(
-    STORAGE,
-    JSON.stringify({
-      surah:currentSurah,
-      ayah:currentAyah
-    })
-  );
-
-}
-
-
-/* =========================
-   LOAD VERSE
-========================= */
-
-async function loadVerse(
-  surah=currentSurah,
-  ayah=currentAyah
-){
-
-  $("content").innerHTML =
-    `<div class="loading">
-      Chargement...
+  result.innerHTML =
+    `<div class="message">
+      Loading...
     </div>`;
 
   try{
 
-    const reference =
-      `${surah}:${ayah}`;
+    const match =
+      query.match(/(.+?)\s+(\d+)$/);
 
-    const response =
-      await fetch(
-        `${API}/ayah/${reference}/editions/${ARABIC},${FRENCH}`
+    if(!match){
+
+      throw new Error(
+        "Format : Al Baqara 255"
       );
-
-    if(!response.ok){
-
-      throw new Error();
 
     }
 
-    const json =
-      await response.json();
+    let name =
+      match[1]
+        .replace(/^surah\s+/,"")
+        .replace(/^sourate\s+/,"")
+        .trim();
 
-    if(
-      !json.data ||
-      !Array.isArray(json.data)
-    ){
+    const verse =
+      Number(match[2]);
 
-      throw new Error();
+    const surah =
+      surahs[name];
+
+    if(!surah){
+
+      throw new Error(
+        "Surah not found"
+      );
 
     }
 
-    const arabic =
-      json.data.find(
-        x=>x.edition.identifier===ARABIC
-      );
-
-    const french =
-      json.data.find(
-        x=>x.edition.identifier===FRENCH
-      );
-
-    if(!arabic || !french){
-
-      throw new Error();
-
-    }
-
-    currentSurah =
-      arabic.surah.number;
-
-    currentAyah =
-      arabic.numberInSurah;
-
-    save();
-
-    const info =
-      SURAH_NAMES.find(
-        s=>s.id===currentSurah
-      );
-
-    const surahName =
-      info
-      ? info.name
-      : arabic.surah.englishName;
-
-    $("content").innerHTML = `
-
-      <div class="info">
-
-        <div>
-
-          <div class="surah">
-            ${surahName}
-          </div>
-
-          <div class="reference">
-            Sourate ${currentSurah} · Verset ${currentAyah}
-          </div>
-
-        </div>
-
-        <span class="badge">
-          ${currentSurah}:${currentAyah}
-        </span>
-
-      </div>
-
-
-      <div class="arabic">
-        ${arabic.text}
-      </div>
-
-
-      <div class="translit">
-        ${frenchTextToTranslit(french.text)}
-      </div>
-
-
-      <div class="translation">
-        ${french.text}
-      </div>
-
-
-      <div class="controls">
-
-        <span class="counter">
-          ${currentSurah}:${currentAyah}
-        </span>
-
-        <div class="nav">
-
-          <button
-            class="btn"
-            id="prevBtn"
-            type="button">
-            ←
-          </button>
-
-          <button
-            class="btn"
-            id="nextBtn"
-            type="button">
-            →
-          </button>
-
-        </div>
-
-      </div>
-
-    `;
-
-    $("prevBtn").onclick =
-      previousVerse;
-
-    $("nextBtn").onclick =
-      nextVerse;
+    await loadVerse(
+      surah,
+      verse
+    );
 
   }catch(error){
 
-    $("content").innerHTML = `
+    result.innerHTML =
+      `<div class="message">
+        Impossible de trouver ce verset.<br>
+        <small>
+        Exemple : Al Baqara 255
+        </small>
+      </div>`;
 
-      <div class="error">
-        Verset introuvable.<br>
-        Essaie par exemple :
-        <strong>Al Baqarah 255</strong>
+  }
+
+}
+
+
+/* ================================
+   LOAD VERSE
+================================ */
+
+async function loadVerse(
+  surah,
+  verse
+){
+
+  /*
+    Arabic
+  */
+
+  const arabicResponse =
+    await fetch(
+      `${API}/ayah/${surah}:${verse}/quran-uthmani`
+    );
+
+  const arabicData =
+    await arabicResponse.json();
+
+
+  /*
+    French translation
+  */
+
+  const frenchResponse =
+    await fetch(
+      `${API}/ayah/${surah}:${verse}/fr.hamidullah`
+    );
+
+  const frenchData =
+    await frenchResponse.json();
+
+
+  /*
+    Transliteration
+    Uses English transliteration
+    and displays it separately.
+  */
+
+  const translitResponse =
+    await fetch(
+      `${API}/ayah/${surah}:${verse}/en.transliteration`
+    );
+
+  const translitData =
+    await translitResponse.json();
+
+
+  /*
+    Audio
+  */
+
+  const audioResponse =
+    await fetch(
+      `${API}/ayah/${surah}:${verse}/ar.alafasy`
+    );
+
+  const audioData =
+    await audioResponse.json();
+
+
+  const arabic =
+    arabicData.data.text;
+
+  const french =
+    frenchData.data.text;
+
+  const translit =
+    translitData.data.text;
+
+  const audio =
+    audioData.data.audio;
+
+
+  const surahName =
+    arabicData.data.surah.name;
+
+
+  /*
+    DISPLAY
+  */
+
+  result.innerHTML = `
+
+    <article class="verse-card">
+
+      <div class="verse-top">
+
+        <span class="reference">
+          ${surahName} · ${verse}
+        </span>
+
+        <button
+          class="play"
+          id="playBtn"
+          type="button">
+          ▶
+        </button>
+
       </div>
 
-    `;
 
-  }
+      <!-- ARABIC -->
 
-}
-
-
-/* =========================
-   NAVIGATION
-========================= */
-
-async function nextVerse(){
-
-  if(currentAyah < 286){
-
-    await loadVerse(
-      currentSurah,
-      currentAyah+1
-    );
-
-    return;
-
-  }
-
-  if(currentSurah < 114){
-
-    await loadVerse(
-      currentSurah+1,
-      1
-    );
-
-  }
-
-}
+      <div class="arabic">
+        ${arabic}
+      </div>
 
 
-async function previousVerse(){
+      <!-- TRANSLITERATION -->
 
-  if(currentAyah > 1){
+      <div class="translit">
 
-    await loadVerse(
-      currentSurah,
-      currentAyah-1
-    );
+        <span class="label">
+          Transliteration
+        </span>
 
-    return;
+        ${translit}
 
-  }
+      </div>
 
-  if(currentSurah > 1){
 
-    const previous =
-      currentSurah-1;
+      <!-- FRENCH -->
 
-    /*
-      On récupère la sourate
-      précédente pour connaître
-      son dernier verset.
-    */
+      <div class="translation">
 
-    try{
+        <span class="label">
+          Traduction française
+        </span>
 
-      const response =
-        await fetch(
-          `${API}/surah/${previous}`
-        );
+        ${french}
 
-      const json =
-        await response.json();
+      </div>
 
-      const last =
-        json.data.ayahs.length;
 
-      await loadVerse(
-        previous,
-        last
-      );
+      <!-- AUDIO -->
 
-    }catch{
+      <audio
+        id="audio"
+        class="audio"
+        controls
+        src="${audio}">
+      </audio>
 
-      await loadVerse(
-        previous,
-        1
-      );
+    </article>
+
+  `;
+
+
+  const playBtn =
+    document.getElementById("playBtn");
+
+  const audioElement =
+    document.getElementById("audio");
+
+
+  playBtn.onclick = ()=>{
+
+    if(audioElement.paused){
+
+      audioElement.play();
+
+      playBtn.textContent="❚❚";
+
+      audioElement.classList.add("show");
+
+    }else{
+
+      audioElement.pause();
+
+      playBtn.textContent="▶";
 
     }
 
-  }
+  };
+
+
+  audioElement.onended = ()=>{
+
+    playBtn.textContent="▶";
+
+  };
 
 }
 
 
-/* =========================
-   SEARCH
-========================= */
+/* ================================
+   EVENTS
+================================ */
 
-$("searchBtn").onclick =
-  search;
+searchBtn.onclick =
+searchVerse;
 
 
-$("searchInput").addEventListener(
+searchInput.addEventListener(
   "keydown",
   event=>{
 
     if(event.key==="Enter"){
 
-      search();
+      searchVerse();
 
     }
 
   }
-);
-
-
-function search(){
-
-  const result =
-    parseSearch(
-      $("searchInput").value
-    );
-
-  if(!result){
-
-    $("content").innerHTML = `
-
-      <div class="error">
-        Recherche invalide.<br>
-        Exemple : <strong>Al Baqarah 255</strong>
-        ou <strong>2:255</strong>
-      </div>
-
-    `;
-
-    return;
-
-  }
-
-  if(
-    result.surah<1 ||
-    result.surah>114 ||
-    result.ayah<1
-  ){
-
-    return;
-
-  }
-
-  loadVerse(
-    result.surah,
-    result.ayah
-  );
-
-}
-
-
-/* =========================
-   TRANSLITERATION
-========================= */
-
-/*
-  L'API utilisée ici fournit
-  directement le texte arabe et
-  la traduction française.
-
-  Pour éviter de générer une
-  fausse translittération du Coran,
-  on n'invente pas une prononciation
-  à partir du français.
-
-  Cette zone affiche donc la
-  traduction française sous un
-  style distinct.
-*/
-
-function frenchTextToTranslit(text){
-
-  return text;
-
-}
-
-
-/* =========================
-   START
-========================= */
-
-loadVerse(
-  currentSurah,
-  currentAyah
 );
 
 </script>
